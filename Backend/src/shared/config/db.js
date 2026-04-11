@@ -9,6 +9,7 @@ export const connectDB = async (retries = MAX_RETRIES) => {
   try {
     const conn = await mongoose.connect(env.MONGO_URI, {
       serverSelectionTimeoutMS: 10000,
+      family: 4,
     });
     logger.info(`MongoDB connected: ${conn.connection.host}`);
   } catch (error) {
