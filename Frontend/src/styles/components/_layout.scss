@@ -1,0 +1,101 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.layout-wrapper {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  overflow: hidden;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  padding: 0; // Padding handled by internal containers
+  transition: padding-left 0.4s ease;
+
+  @include lg {
+    padding-left: 250px + ($spacing-md * 2); // Sidebar width + margin
+  }
+
+  .topbar {
+  @include glass-panel;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 $spacing-xl;
+  height: 80px;
+  border-radius: 0;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  background: rgba($bg-gradient-start, 0.5);
+  backdrop-filter: blur(10px);
+  z-index: 100;
+  }
+
+  .page-container {
+    flex: 1;
+    min-height: 0; // Prevent content from expanding parent flex height
+    padding: $spacing-md;
+    @include lg {
+      padding-left: $spacing-xl;
+      padding-right: $spacing-xl;
+    }
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    
+    // Page level transition animations
+    animation: fadeIn 0.5s ease;
+  }
+}
+
+.loading-screen {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-family-display;
+  font-size: 24px;
+  color: $text-primary;
+  background: $bg-gradient-start;
+}
+
+.glass-input {
+  @include glass-input;
+  font-family: $font-family-base;
+  position: relative;
+
+  &.has-error {
+    border-color: rgba($accent-danger, 0.6);
+    box-shadow: 0 0 0 1px rgba($accent-danger, 0.2);
+  }
+}
+
+/* Custom Select Arrow Styling */
+select.glass-input {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ef4444' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right $spacing-md center;
+  background-size: 16px;
+  padding-right: $spacing-2xl;
+  cursor: pointer;
+
+  option {
+    background-color: #0c0a09;
+    color: $text-primary;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

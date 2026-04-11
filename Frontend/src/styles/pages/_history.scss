@@ -1,0 +1,350 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.history-page {
+  padding: $spacing-xl;
+  max-width: 1000px;
+  margin: 0 auto;
+  animation: fadeIn 0.5s ease-out;
+
+  .history-header {
+    margin-bottom: $spacing-2xl;
+    position: relative;
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: $text-primary;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+
+      svg {
+        color: $accent-primary;
+        filter: drop-shadow(0 0 10px rgba($accent-primary, 0.4));
+      }
+    }
+
+    p {
+      color: $text-secondary;
+      font-size: 1.1rem;
+    }
+  }
+
+  .history-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+
+    .day-group {
+      padding: 0;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: $border-radius-lg;
+      background: rgba(255, 255, 255, 0.01);
+
+      &:hover {
+        transform: translateY(-2px);
+        border-color: rgba($accent-primary, 0.2);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      }
+
+      .day-header {
+        padding: $spacing-lg $spacing-xl;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.02);
+        gap: $spacing-md;
+        
+        @media (max-width: 768px) {
+          padding: $spacing-md $spacing-lg;
+          flex-wrap: wrap;
+        }
+
+        .day-info {
+          display: flex;
+          align-items: center;
+          gap: $spacing-lg;
+
+          @media (max-width: 480px) {
+            gap: $spacing-md;
+          }
+
+          .day-icon {
+            font-size: 40px; // Increased size
+            color: $accent-primary;
+            background: rgba($accent-primary, 0.15); // Slightly more contrast
+            padding: 12px; // Slightly more breathing room
+            border-radius: 50%; // Make it a perfect circle
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+
+            @media (max-width: 480px) {
+              font-size: 35px;
+              padding: 10px;
+            }
+          }
+
+          .date-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+
+            .full-date {
+              font-weight: 700;
+              font-size: 1.1rem;
+              color: $text-primary;
+
+              @media (max-width: 480px) {
+                font-size: 1rem;
+              }
+            }
+
+            .day-summary {
+              font-size: 0.9rem;
+              color: $text-secondary;
+            }
+          }
+        }
+
+        .header-actions {
+          display: flex;
+          align-items: center;
+          gap: $spacing-md;
+
+          @media (max-width: 768px) {
+            width: 100%;
+            justify-content: space-between;
+            padding-top: $spacing-xs;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+          }
+
+          .accuracy-badge {
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: $border-radius-pill;
+            letter-spacing: 0.5px;
+
+            @media (max-width: 480px) {
+              padding: 4px 10px;
+              font-size: 0.75rem;
+            }
+          }
+
+          .expand-toggle {
+            color: $text-muted;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s ease;
+          }
+        }
+      }
+
+      .sessions-list {
+        padding: $spacing-xl;
+        background: rgba(0, 0, 0, 0.15);
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-xl;
+
+        @media (max-width: 768px) {
+          padding: $spacing-lg;
+        }
+
+        .session-card {
+          display: flex;
+          gap: $spacing-xl;
+          position: relative;
+
+          @media (max-width: 768px) {
+            gap: $spacing-lg;
+          }
+
+          .session-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 100px;
+
+            @media (max-width: 768px) {
+              min-width: 70px;
+            }
+
+            .time-stamp {
+              font-size: 0.85rem;
+              font-weight: 700;
+              color: $accent-primary;
+              background: rgba($accent-primary, 0.1);
+              padding: 4px 10px;
+              border-radius: 6px;
+              display: flex;
+              align-items: center;
+              gap: 6px;
+              white-space: nowrap;
+
+              @media (max-width: 480px) {
+                font-size: 0.75rem;
+                padding: 3px 8px;
+              }
+            }
+
+            .session-line {
+              flex: 1;
+              width: 2px;
+              background: linear-gradient(to bottom, rgba($accent-primary, 0.3), transparent);
+              margin-top: 10px;
+            }
+          }
+
+          .session-right {
+            flex: 1;
+            padding-bottom: $spacing-md;
+
+            .session-meta {
+              display: flex;
+              gap: $spacing-xl;
+              margin-bottom: $spacing-md;
+
+              @media (max-width: 480px) {
+                gap: $spacing-md;
+                flex-wrap: wrap;
+              }
+
+              .stat {
+                display: flex;
+                flex-direction: column;
+                
+                .label {
+                  font-size: 0.75rem;
+                  color: $text-muted;
+                  text-transform: uppercase;
+                  letter-spacing: 1px;
+                }
+                .value {
+                  font-weight: 700;
+                  color: $text-primary;
+                  font-size: 1.1rem;
+
+                  @media (max-width: 480px) {
+                    font-size: 1rem;
+                  }
+                }
+              }
+            }
+
+            .session-subjects {
+              display: flex;
+              flex-wrap: wrap;
+              gap: 8px;
+              margin-bottom: $spacing-md;
+
+              .subject-item {
+                background: rgba(255, 255, 255, 0.05);
+                padding: 4px 12px;
+                border-radius: 6px;
+                border: 1px solid rgba(255, 255, 255, 0.05);
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+                @media (max-width: 480px) {
+                  padding: 3px 10px;
+                }
+
+                .sub-name { font-size: 0.9rem; font-weight: 600; color: $text-secondary; }
+                .sub-counts { font-size: 0.85rem; color: $accent-primary; font-weight: 700; opacity: 0.8; }
+              }
+            }
+
+            .session-notes {
+              font-style: italic;
+              color: $text-muted;
+              font-size: 0.95rem;
+              padding: $spacing-sm $spacing-md;
+              background: rgba(0, 0, 0, 0.1);
+              border-left: 3px solid rgba($accent-primary, 0.3);
+              border-radius: 4px;
+
+              @media (max-width: 480px) {
+                font-size: 0.85rem;
+                padding: $spacing-xs $spacing-sm;
+              }
+            }
+          }
+
+          &:last-child .session-line {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .history-page {
+    padding: $spacing-lg;
+
+    .history-header {
+      h1 { font-size: 2rem; }
+      p { font-size: 1rem; }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .history-page {
+    padding: $spacing-md;
+
+    .history-header {
+      h1 { font-size: 1.7rem; }
+    }
+  }
+}
+
+.empty-history {
+  padding: $spacing-2xl;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-lg;
+  color: $text-muted;
+
+  svg { color: rgba(255, 255, 255, 0.1); }
+  h3 { color: $text-primary; }
+  p { max-width: 400px; margin: 0 auto; }
+}
+
+.loading-state {
+  padding: $spacing-2xl;
+  text-align: center;
+  color: $text-secondary;
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba($accent-primary, 0.1);
+    border-top-color: $accent-primary;
+    border-radius: 50%;
+    margin: 0 auto $spacing-lg;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

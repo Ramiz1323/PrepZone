@@ -1,0 +1,54 @@
+// Core Colors
+$bg-gradient-start: #0a0a0a; // Absolute Dark
+$bg-gradient-end: #1a0505;   // Deepest Red
+$bg-gradient-accent: #3b0707; // Dark Crimson
+
+$glass-bg-light: rgba(255, 255, 255, 0.02);
+$glass-bg: rgba(255, 255, 255, 0.04);
+$glass-bg-hover: rgba(255, 255, 255, 0.08);
+
+$glass-border: rgba(239, 68, 68, 0.15);
+$glass-border-focus: rgba(239, 68, 68, 0.4);
+
+// Primary Accents
+$accent-primary: #ef4444; // Gamified Red
+$accent-primary-hover: #f87171; // Vivid Red
+$accent-secondary: #f97316; // Energetic Orange
+$accent-success: #10b981; // Emerald 500
+$accent-warning: #facc15; // Gold/Yellow
+$accent-danger: #dc2626; // Strong Red
+
+// Text Colors
+$text-primary: #f8fafc; // Slate 50
+$text-secondary: #cbd5e1; // Slate 300
+$text-muted: #94a3b8; // Slate 400
+
+// Typography
+$font-family-base: 'Inter', sans-serif;
+$font-family-display: 'Space Grotesk', sans-serif;
+
+// Spacing & Sizing
+$border-radius-sm: 8px;
+$border-radius-md: 16px;
+$border-radius-lg: 24px;
+$border-radius-pill: 9999px;
+
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+$spacing-2xl: 48px;
+
+// Effects
+$glass-blur: 16px;
+$shadow-soft: 0 4px 30px rgba(0, 0, 0, 0.3);
+$shadow-glow: 0 0 20px rgba(239, 68, 68, 0.4); // Gamified Red Glow
+$transition-base: all 0.3s ease;
+$transition-bounce: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+// Breakpoints
+$bp-sm: 640px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1280px;

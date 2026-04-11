@@ -1,0 +1,147 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.mistakes-page {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+
+  .header-section {
+    h1 { font-size: 28px; }
+    p { color: $text-secondary; }
+  }
+
+  .add-mistake-card {
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+      margin-bottom: $spacing-md;
+      color: $text-primary;
+      
+      .icon { color: $accent-warning; font-size: 20px; }
+      h3 { margin: 0; font-size: 18px; }
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: $spacing-md;
+      margin-bottom: $spacing-md;
+
+      @include md {
+        grid-template-columns: 220px 1fr 1fr;
+      }
+    }
+
+    .select-input {
+      option {
+        background: $bg-gradient-start;
+        color: $text-primary;
+      }
+    }
+  }
+
+  .mistakes-list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+
+    .mistake-item {
+      position: relative;
+      
+      .mistake-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: $spacing-md;
+
+        .header-left {
+          display: flex;
+          align-items: center;
+          gap: $spacing-md;
+        }
+
+        .subject-tag {
+          font-size: 11px;
+          font-weight: 700;
+          padding: 4px 10px;
+          border-radius: $border-radius-pill;
+          background: rgba($accent-primary, 0.1);
+          color: #fca5a5;
+          border: 1px solid rgba($accent-primary, 0.2);
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+
+        .date-tag {
+          font-size: 12px;
+          color: $text-muted;
+          font-family: monospace;
+        }
+
+        .icon-btn.delete {
+          color: rgba($accent-danger, 0.5);
+          background: rgba($accent-danger, 0.05);
+          padding: 6px;
+          border-radius: $border-radius-sm;
+          font-size: 18px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.2s ease;
+          border: 1px solid transparent;
+
+          &:hover {
+            color: #ef4444;
+            background: rgba($accent-danger, 0.15);
+            border-color: rgba($accent-danger, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 0 10px rgba($accent-danger, 0.2);
+          }
+        }
+      }
+
+      .mistake-body {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: $spacing-md;
+
+        @include md { grid-template-columns: 1fr 1fr; }
+
+        .mistake-block, .concept-block {
+          background: rgba(0,0,0,0.15);
+          padding: $spacing-md;
+          border-radius: $border-radius-sm;
+          border: 1px solid rgba(255,255,255,0.05);
+
+          strong {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            color: $text-secondary;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
+
+          p {
+            font-size: 14px;
+            color: $text-primary;
+          }
+        }
+        
+        .mistake-block strong { color: $accent-danger; }
+        .concept-block strong { color: $accent-success; }
+      }
+
+
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: $spacing-xl;
+      color: $text-secondary;
+      @include glass-panel;
+    }
+  }
+}

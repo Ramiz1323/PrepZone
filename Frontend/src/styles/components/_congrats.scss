@@ -1,0 +1,163 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.congrats-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: fadeIn 0.3s ease-out;
+
+  .congrats-modal {
+    width: 90%;
+    max-width: 380px; // Smaller modal
+    background: rgba(20, 20, 20, 0.95);
+    border: 1px solid rgba($accent-primary, 0.3);
+    border-radius: $border-radius-lg;
+    padding: $spacing-xl; // Compact padding
+    text-align: center;
+    box-shadow: 0 0 50px rgba($accent-primary, 0.2), 0 20px 60px rgba(0, 0, 0, 0.6);
+    animation: modalBounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba($accent-primary, 0.1) 0%, transparent 70%);
+        animation: rotate 10s linear infinite;
+        pointer-events: none;
+    }
+
+    .modal-header {
+      margin-bottom: $spacing-lg;
+
+      .success-icon-wrapper {
+        position: relative;
+        width: 64px; // Smaller icon
+        height: 64px;
+        margin: 0 auto $spacing-md;
+        
+        .main-icon {
+          font-size: 64px;
+          color: $accent-primary;
+          filter: drop-shadow(0 0 10px rgba($accent-primary, 0.5));
+        }
+
+        .stat-icon {
+          position: absolute;
+          bottom: 0;
+          right: -8px;
+          font-size: 24px; // Smaller badge
+          color: #10b981;
+          background: #000;
+          padding: 3px;
+          border-radius: 50%;
+          border: 2px solid $accent-primary;
+          animation: iconPop 0.6s 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+        }
+      }
+
+      h2 {
+        font-size: 2rem; // Smaller title
+        font-weight: 800;
+        color: $text-primary;
+        margin-bottom: $spacing-xs;
+        @include font-display;
+        letter-spacing: -0.5px;
+      }
+
+      p {
+        color: $text-muted;
+        font-size: 1rem;
+      }
+    }
+
+    .modal-content {
+      margin-bottom: $spacing-xl;
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: $spacing-sm; // Tighter grid
+        margin-bottom: $spacing-lg;
+
+        .stat-card {
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.05);
+          padding: $spacing-sm;
+          border-radius: $border-radius-md;
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+
+          .stat-value {
+            font-size: 1.5rem; // Smaller stats
+            font-weight: 800;
+            color: $accent-primary;
+          }
+
+          .stat-label {
+            font-size: 0.7rem;
+            color: $text-muted;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+          }
+        }
+      }
+
+      .motivation-text {
+        font-size: 0.9rem; // Smaller text
+        font-style: italic;
+        color: $text-secondary;
+        line-height: 1.5;
+        padding: $spacing-sm;
+        background: rgba($accent-primary, 0.05);
+        border-radius: $border-radius-sm;
+      }
+    }
+
+    .modal-actions {
+      .awesome-btn {
+        width: 100%;
+        background: linear-gradient(135deg, $accent-primary, #991b1b);
+        height: 48px; // Smaller button
+        font-size: 1rem;
+        font-weight: 800;
+        box-shadow: 0 10px 30px rgba($accent-primary, 0.3);
+        
+        &:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 40px rgba($accent-primary, 0.4);
+        }
+      }
+    }
+  }
+}
+
+@keyframes modalBounceIn {
+  0% { opacity: 0; transform: scale(0.5) translateY(40px); }
+  60% { opacity: 1; transform: scale(1.05) translateY(-10px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes iconPop {
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

@@ -1,0 +1,79 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-md;
+
+  .auth-card {
+    width: 100%;
+    max-width: 440px;
+    padding: $spacing-2xl $spacing-xl;
+    position: relative;
+    z-index: 10;
+    
+    .auth-header {
+      text-align: center;
+      margin-bottom: $spacing-xl;
+
+      h1 {
+        font-size: 32px;
+        color: $text-primary;
+        margin-bottom: $spacing-xs;
+
+        .highlight {
+          color: $accent-primary;
+          text-shadow: 0 0 15px rgba($accent-primary, 0.4);
+        }
+      }
+
+      p {
+        color: $text-secondary;
+        font-size: 15px;
+      }
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+
+      .submit-btn {
+        margin-top: $spacing-md;
+        width: 100%;
+      }
+    }
+
+    .auth-footer {
+      margin-top: $spacing-xl;
+      text-align: center;
+      color: $text-secondary;
+      font-size: 14px;
+
+      a {
+        color: $accent-primary;
+        font-weight: 600;
+        margin-left: 4px;
+        transition: $transition-base;
+
+        &:hover {
+          color: $accent-primary-hover;
+          text-shadow: 0 0 10px rgba($accent-primary, 0.5);
+        }
+      }
+    }
+  }
+
+  .auth-error {
+    background: rgba($accent-danger, 0.1);
+    border: 1px solid rgba($accent-danger, 0.2);
+    color: $accent-danger;
+    padding: $spacing-sm $spacing-md;
+    border-radius: $border-radius-sm;
+    font-size: 14px;
+    margin-bottom: $spacing-md;
+    text-align: center;
+  }
+}

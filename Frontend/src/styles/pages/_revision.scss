@@ -1,0 +1,130 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.revision-page {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+
+  .header-section {
+    h1 { font-size: 28px; }
+    p { color: $text-secondary; }
+  }
+
+  .add-task-card {
+    padding: $spacing-md $spacing-lg;
+
+    .task-form {
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: $spacing-md;
+        align-items: center;
+
+        @include md {
+          grid-template-columns: 220px 1fr 180px auto;
+        }
+
+        .input-group { margin-bottom: 0; }
+        
+        .select-input {
+          option { background: $bg-gradient-start; color: $text-primary; }
+        }
+
+        .add-btn {
+          padding: 0;
+          width: 48px;
+          height: 48px;
+          font-size: 20px;
+          border-radius: $border-radius-sm;
+        }
+      }
+    }
+  }
+
+  .task-list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+
+    .task-item {
+      display: flex;
+      align-items: center;
+      padding: $spacing-md;
+      gap: $spacing-md;
+      position: relative;
+      overflow: hidden;
+      transition: $transition-base;
+
+      .priority-indicator {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+
+        &.high { background: $accent-danger; }
+        &.medium { background: $accent-warning; }
+        &.low { background: $accent-success; }
+      }
+
+      .check-btn {
+        font-size: 22px;
+        color: $text-muted;
+        display: flex;
+        align-items: center;
+        transition: $transition-base;
+
+        &:hover { color: $accent-primary; }
+        .checked { color: $accent-success; }
+      }
+
+      .task-content {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: $spacing-md;
+
+        .subject-tag {
+          font-size: 11px;
+          font-weight: 700;
+          padding: 2px 8px;
+          border-radius: $border-radius-pill;
+          background: rgba(255,255,255,0.1);
+          color: $text-secondary;
+        }
+
+        .topic-text {
+          font-size: 15px;
+          color: $text-primary;
+        }
+      }
+
+      .delete-btn {
+        color: rgba(239, 68, 68, 0.5);
+        font-size: 18px;
+        padding: 4px;
+        &:hover {
+          color: $accent-danger;
+          transform: scale(1.1);
+        }
+      }
+
+      &.completed {
+        opacity: 0.6;
+        .topic-text {
+          text-decoration: line-through;
+          color: $text-muted;
+        }
+        .priority-indicator { background: $text-muted; }
+      }
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: $spacing-xl;
+      color: $text-secondary;
+      @include glass-panel;
+    }
+  }
+}
