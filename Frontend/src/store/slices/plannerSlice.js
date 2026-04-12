@@ -1,16 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-const API_URL = 'http://localhost:5000/api/planner';
+import api from '../../services/api';
 
 export const listPlanners = createAsyncThunk(
   'planner/listPlanners',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${API_URL}/list`, { withCredentials: true });
-      return response.data.data;
+      const response = await api.get('/planner/list');
+      return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to list planners');
+      return rejectWithValue(error.message || 'Failed to list planners');
     }
   }
 );
@@ -19,11 +17,11 @@ export const fetchPlanner = createAsyncThunk(
   'planner/fetchPlanner',
   async (id, { rejectWithValue }) => {
     try {
-      const url = id ? `${API_URL}/${id}` : API_URL;
-      const response = await axios.get(url, { withCredentials: true });
-      return response.data.data;
+      const url = id && id !== 'active' ? `/planner/${id}` : '/planner/active';
+      const response = await api.get(url);
+      return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to fetch planner');
+      return rejectWithValue(error.message || 'Failed to fetch planner');
     }
   }
 );
@@ -32,12 +30,12 @@ export const savePlanner = createAsyncThunk(
   'planner/savePlanner',
   async ({ id, plans, title, isActive }, { rejectWithValue }) => {
     try {
-      const method = id ? 'put' : 'post';
-      const url = id ? `${API_URL}/${id}` : API_URL;
-      const response = await axios[method](url, { plans, title, isActive }, { withCredentials: true });
-      return response.data.data;
+      const method = id && id !== 'new' ? 'put' : 'post';
+      const url = id && id !== 'new' ? `/planner/${id}` : '/planner';
+      const response = await api[method](url, { plans, title, isActive });
+      return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to save planner');
+      return rejectWithValue(error.message || 'Failed to save planner');
     }
   }
 );
@@ -46,11 +44,11 @@ export const setActivePlan = createAsyncThunk(
   'planner/setActivePlan',
   async (id, { rejectWithValue, dispatch }) => {
     try {
-      const response = await axios.patch(`${API_URL}/${id}/active`, {}, { withCredentials: true });
+      const response = await api.patch(`/planner/${id}/active`, {});
       dispatch(listPlanners()); // Refresh list to update isActive statuses
-      return response.data.data;
+      return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to set active plan');
+      return rejectWithValue(error.message || 'Failed to set active plan');
     }
   }
 );
@@ -59,11 +57,11 @@ export const deletePlanner = createAsyncThunk(
   'planner/deletePlanner',
   async (id, { rejectWithValue, dispatch }) => {
     try {
-      await axios.delete(`${API_URL}/${id}`, { withCredentials: true });
+      await api.delete(`/planner/${id}`);
       dispatch(listPlanners());
       return id;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to delete planner');
+      return rejectWithValue(error.message || 'Failed to delete planner');
     }
   }
 );
