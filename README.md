@@ -1,60 +1,57 @@
-# 🛡️ PrepZone - JECA Preparation Tracker
+# 🛡️ PrepZone - AI-Powered JECA Preparation Tracker
 
-PrepZone is a premium, **gamified learning ecosystem** designed for JECA aspirants. It transforms mundane study tracking into a competitive "Scholar's Journey," leveraging the **MERN stack** to provide real-time progression, intelligent analytics, and an interactive revision queue.
+PrepZone is a premium, **gamified learning ecosystem** designed for JECA (MCA Entrance) aspirants. It transforms traditional study tracking into a competitive "Scholar's Journey," leveraging **Mistral AI** to generate intelligent study optimizations and the **MERN stack** to provide a high-focus, distraction-free environment.
 
-![Status](https://img.shields.io/badge/Status-Active-brightgreen)
-![Tech](https://img.shields.io/badge/Stack-MERN-red)
-![Gamification](https://img.shields.io/badge/Gamified-XP--System-gold)
-
----
-
-## ✨ Highlighted Features
-
-### 🏆 Scholar’s Journey (Gamification)
-*   **XP Engine**: Earn XP based on study minutes, MCQs solved, and accuracy.
-*   **Game Tiers**: Climb the ranks from **Bronze** to **Grandmaster**.
-*   **Streak Fire Badge**: Interactive flickering flame that tracks your daily consistency.
-
-### 📊 Intelligent Analytics
-*   **Productivity Mapping**: Visualized study sessions using Recharts.
-*   **Subject-wise Distribution**: Break down your focus areas across different subjects.
-*   **Accuracy Tracking**: Monitor your mistake rate over time.
-
-### 🧠 Mistake Bank & Revision Queue
-*   **Active Recall**: A specialized system to log errors and schedule them for revision.
-*   **Status Management**: Tag items as Pending or Completed to stay organized.
+[![Status](https://img.shields.io/badge/Status-Active-brightgreen)](https://github.com/Ramiz1323/PrepZone)
+[![Tech](https://img.shields.io/badge/Stack-MERN-red)](https://github.com/Ramiz1323/PrepZone)
+[![AI](https://img.shields.io/badge/AI-Mistral-blue)](https://mistral.ai/)
+[![UI](https://img.shields.io/badge/UI-Glassmorphism-gold)](https://github.com/Ramiz1323/PrepZone)
 
 ---
 
-## 🏗️ Project Architecture
+## ✨ Core Pillars
 
-### 📂 Frontend (React + Vite)
-- **Modular Store**: State management powered by **Redux Toolkit** with sliced logic for Auth, Tracker, and Analytics.
-- **Glassmorphic UI**: Premium design system built with **Sass** and consistent variable-driven tokens.
-- **Unified API Layer**: Centralized custom Axios service with interceptors for seamless Backend interaction.
+### 🧠 AI Roadmap Architect
+Powered by **Mistral AI**, PrepZone doesn't just track data—it understands it.
+*   **Performance Diagnostics**: Analyzes your MCQ accuracy and study sessions to identify hidden weak points.
+*   **Dynamic Optimization**: Generates personalized suggestions to refine your roadmap for maximum efficiency.
+*   **Adaptive Learning**: Updates your projected path based on your real-time speed and recall rates.
+
+### 🏆 The Scholar’s Journey (Gamification)
+Turn your preparation into a game where progress is the prize.
+*   **XP Engine**: Earn experience points for every minute studied and every MCQ solved.
+*   **Dynamic Tiers**: Progress through levels—from **Bronze Novice** to **Grandmaster Scholar**.
+*   **Consistency Badges**: Features an interactive **Streak Fire Badge** that visually grows as you maintain your daily consistency.
+
+### 📊 Intelligent Analytics & MCQ Master
+*   **Visual Dashboards**: Real-time charts powered by Recharts for productivity mapping and subject distribution.
+*   **MCQ Simulation**: A dedicated testing environment for large-scale practice with instant feedback.
+*   **Active Recall Queue**: A "Mistake Bank" where errors are automatically logged for scheduled revision intervals.
+
+---
+
+## 🏗️ Technical Architecture
+
+### 📂 Frontend (React 19 + Vite)
+- **Design System**: A custom-built **Glassmorphism** system with high-end Sass design tokens (modern Sass 3+ module logic).
+- **State Management**: Scalable architecture using **Redux Toolkit** (slices for Auth, Tracker, Practice, and Analytics).
+- **Responsive Mastery**: Tailored layouts for both Desktop (multi-column roadmap) and Mobile (streamlined focus-first lists).
 
 ### 📂 Backend (Node.js + Express)
-- **Controller-Service-Model**: Industry-standard design pattern for clean, maintainable logic.
-- **Real-time Gamification Service**: Automated XP and level calculation triggered on session logs.
-- **Security**: JWT-based authentication with secure cookie storage and rate-limiting.
+- **Controller-Service pattern**: Clean separation of concerns for maintainable enterprise-grade logic.
+- **Mistral AI Integration**: Asynchronous suggestion engine for AI-driven performance diagnostics.
+- **Security Protocols**: JWT authentication with httpOnly cookie storage, rate-limiting, and Winston-powered logging.
 
 ---
 
 ## 🛠️ Tech Stack
-| Tier | Technology |
-| :--- | :--- |
-| **Frontend** | React 19, Redux Toolkit, Vite, Sass, Recharts |
-| **Backend** | Node.js, Express, Mongoose, JWT |
-| **Database** | MongoDB Atlas |
-| **AI Integration** | Mistral AI API |
 
----
-
-## 🚀 Use Cases
-1.  **Preparation Tracking**: Daily logging of MCQ practice and study duration.
-2.  **Performance Visualization**: Identifying weak subjects through data dashboards.
-3.  **Revision Management**: Ensuring that no mistake goes unreviewed through the Revision Queue.
-4.  **Stay Motivated**: Competing against yourself to reach the next "Rank" tier.
+| Domain | Technolgoy |
+| :-- | :-- |
+| **Frontend** | React 19, Redux Toolkit, Vite, Sass (Modern Module Syntax), Recharts |
+| **Backend** | Node.js, Express, Mongoose, Mistral AI SDK |
+| **Database** | MongoDB Atlas (Cloud) |
+| **DevOps** | Render (API), DigitalOcean VPS (Frontend) |
 
 ---
 
@@ -63,26 +60,30 @@ PrepZone is a premium, **gamified learning ecosystem** designed for JECA aspiran
 ### Prerequisites
 - Node.js (v18+)
 - MongoDB Atlas Account
+- Mistral AI API Key
 
 ### Local Environment
-1. Clone the repo: `git clone https://github.com/Ramiz1323/PrepZone.git`
-2. **Backend**: 
+1. **Clone the repo**:
+   ```bash
+   git clone https://github.com/Ramiz1323/PrepZone.git
+   ```
+2. **Setup Backend**: 
    - `cd Backend && npm install`
-   - Create `.env` and add: `MONGO_URI`, `JWT_SECRET`, `CLIENT_URL`.
-   - Start: `npm run dev`
-3. **Frontend**:
+   - Create a `.env` file with: `MONGO_URI`, `JWT_SECRET`, `CLIENT_URL`, `MISTRAL_API_KEY`.
+   - Run: `npm run dev`
+3. **Setup Frontend**:
    - `cd Frontend && npm install`
-   - Create `.env` and add: `VITE_API_URL`.
-   - Start: `npm run dev`
+   - Create a `.env` file with: `VITE_API_URL`.
+   - Run: `npm run dev`
 
 ---
 
-## 🌐 Deployment
-This project is configured for optimal deployment on a VPS:
-- **Proxy**: Nginx configured to serve Frontend static builds and proxy `/api/*` to Backend.
-- **Process Management**: PM2 is recommended for the Node.js backend.
-- **Security**: SSL certificates via Certbot.
+## 🚀 Deployment Strategy
+PrepZone is architected for high-performance production hosting:
+*   **API Hosting**: Deployed on **Render** (Auto-sync with Main branch).
+*   **Frontend Hosting**: Hosted on a **DigitalOcean VPS** behind an Nginx reverse proxy.
+*   **Modernization**: Codebase is fully modernized to ensure zero build-time deprecation warnings on CI/CD pipelines.
 
 ---
 
-*Built with ❤️ for JECA Aspirants by PrepZone.*
+*Built with ❤️ for aspirants by PrepZone Team.*
