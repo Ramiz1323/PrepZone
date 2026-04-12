@@ -68,6 +68,9 @@ export const upsertTrackerEntry = async (userId, payload) => {
       await user.save({ validateModifiedOnly: true });
     }
 
+    
+    await existing.save();
+
     return { log: existing, user };
   }
 

@@ -12,6 +12,8 @@ const Analytics = lazy(() => import('./modules/analytics/Analytics'));
 const Mistakes = lazy(() => import('./modules/mistakes/Mistakes'));
 const Revision = lazy(() => import('./modules/revision/Revision'));
 const History = lazy(() => import('./modules/history/History'));
+const Practice = lazy(() => import('./modules/practice/Practice'));
+const PracticePlayer = lazy(() => import('./modules/practice/PracticePlayer'));
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
           <Route path="/mistakes" element={<Mistakes />} />
           <Route path="/revision" element={<Revision />} />
           <Route path="/history" element={<History />} />
+          <Route path="/practice" element={<Practice />} />
+          <Route path="/practice/:id" element={<PracticePlayer />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/dashboard" replace />} />

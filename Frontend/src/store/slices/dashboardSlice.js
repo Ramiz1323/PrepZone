@@ -23,6 +23,15 @@ export const fetchSuggestions = createAsyncThunk('dashboard/fetchSuggestions', a
   }
 });
 
+export const fetchCalendarData = createAsyncThunk('dashboard/fetchCalendar', async (year, thunkAPI) => {
+  try {
+    const res = await dashboardService.getCalendar(year);
+    return res.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.message);
+  }
+});
+
 export const updateDailyGoal = createAsyncThunk('dashboard/updateGoal', async (goal, thunkAPI) => {
   try {
     const res = await authService.updateGoal(goal);
@@ -38,8 +47,10 @@ const dashboardSlice = createSlice({
     summary: null,
     weekly: null,
     suggestions: null,
+    calendarData: [],
     loading: false,
     suggestionsLoading: false,
+    calendarLoading: false,
     error: null,
   },
   reducers: {},
@@ -62,6 +73,15 @@ const dashboardSlice = createSlice({
       })
       .addCase(fetchSuggestions.rejected, (state, action) => {
         state.suggestionsLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchCalendarData.pending, (state) => { state.calendarLoading = true; })
+      .addCase(fetchCalendarData.fulfilled, (state, action) => {
+        state.calendarLoading = false;
+        state.calendarData = action.payload;
+      })
+      .addCase(fetchCalendarData.rejected, (state, action) => {
+        state.calendarLoading = false;
         state.error = action.payload;
       })
       .addCase(updateDailyGoal.fulfilled, (state, action) => {

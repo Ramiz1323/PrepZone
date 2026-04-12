@@ -1,3 +1,7 @@
+// Basic Colors
+$white: #ffffff;
+$black: #000000;
+
 // Core Colors
 $bg-gradient-start: #0a0a0a; // Absolute Dark
 $bg-gradient-end: #1a0505;   // Deepest Red
@@ -17,6 +21,7 @@ $accent-secondary: #f97316; // Energetic Orange
 $accent-success: #10b981; // Emerald 500
 $accent-warning: #facc15; // Gold/Yellow
 $accent-danger: #dc2626; // Strong Red
+$accent-gradient: linear-gradient(135deg, $accent-primary 0%, $accent-secondary 100%);
 
 // Text Colors
 $text-primary: #f8fafc; // Slate 50

@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { FiCheckCircle, FiClock, FiTarget, FiTrendingUp, FiEdit2 } from 'react-icons/fi';
-import { 
-  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, 
-  BarChart, Bar, Cell, ReferenceLine 
+import {
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer,
+  BarChart, Bar, Cell, ReferenceLine
 } from 'recharts';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDashboardData, updateDailyGoal } from '../../store/slices/dashboardSlice';
@@ -14,7 +14,7 @@ import '../../styles/pages/_dashboard.scss';
 const Dashboard = () => {
   const dispatch = useDispatch();
   const { summary, weekly, loading } = useSelector((state) => state.dashboard);
-  
+
   const [isEditingGoal, setIsEditingGoal] = React.useState(false);
   const [tempGoal, setTempGoal] = React.useState('');
 
@@ -130,8 +130,8 @@ const Dashboard = () => {
                 <h3>Weekly Progress (MCQs)</h3>
                 <div className="goal-container">
                   {isEditingGoal ? (
-                    <input 
-                      type="number" 
+                    <input
+                      type="number"
                       className="goal-input"
                       value={tempGoal}
                       onChange={(e) => setTempGoal(e.target.value)}
@@ -153,11 +153,11 @@ const Dashboard = () => {
                     <XAxis dataKey="name" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
                     <YAxis hide domain={[0, 'auto']} />
                     <Tooltip cursor={{ stroke: '#6366f1', strokeWidth: 1 }} />
-                    <ReferenceLine 
-                      y={dailyGoal} 
-                      stroke="#ef4444" 
-                      strokeDasharray="3 3" 
-                      label={{ value: 'GOAL', position: 'insideRight', fill: '#ef4444', fontSize: 10, fontWeight: 700 }} 
+                    <ReferenceLine
+                      y={dailyGoal}
+                      stroke="#ef4444"
+                      strokeDasharray="3 3"
+                      label={{ value: 'GOAL', position: 'insideRight', fill: '#ef4444', fontSize: 10, fontWeight: 700 }}
                     />
                     <Line type="monotone" dataKey="mcqs" stroke="#6366f1" strokeWidth={3} dot={{ r: 4, fill: '#6366f1' }} activeDot={{ r: 8 }} />
                   </LineChart>
@@ -169,11 +169,19 @@ const Dashboard = () => {
               <h3>Subject Accuracy</h3>
               <div className="chart-container">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={subjectData}>
-                    <XAxis dataKey="name" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
-                    <YAxis domain={[0, 100]} hide />
+                  <BarChart data={subjectData} layout="vertical" margin={{ left: 30, right: 30 }}>
+                    <XAxis type="number" domain={[0, 100]} hide />
+                    <YAxis
+                      dataKey="name"
+                      type="category"
+                      stroke="#94a3b8"
+                      fontSize={11}
+                      width={120}
+                      tickLine={false}
+                      axisLine={false}
+                    />
                     <Tooltip cursor={{ fill: 'rgba(255,255,255,0.05)' }} />
-                    <Bar dataKey="accuracy" radius={[4, 4, 0, 0]} >
+                    <Bar dataKey="accuracy" radius={[0, 4, 4, 0]} barSize={20}>
                       {subjectData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={getSubjectColor(entry.name)} />
                       ))}

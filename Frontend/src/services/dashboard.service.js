@@ -16,4 +16,7 @@ export const dashboardService = {
   getSummary,
   getWeekly,
   getSuggestions,
+  getCalendar: async (year) => {
+    return await api.get(`/analytics/calendar${year ? `?year=${year}` : ''}`);
+  },
 };

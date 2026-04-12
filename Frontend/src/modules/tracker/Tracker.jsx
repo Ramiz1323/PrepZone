@@ -18,15 +18,24 @@ const Tracker = () => {
   const dispatch = useDispatch();
   const { submitting, success } = useSelector((state) => state.tracker);
   
-  const [activeSubjects, setActiveSubjects] = useState(DEFAULT_SUBJECTS);
-  const [formData, setFormData] = useState(
-    DEFAULT_SUBJECTS.reduce((acc, sub) => ({ ...acc, [sub]: { mcqsDone: 0, correct: 0 } }), {})
-  );
+  const [activeSubjects, setActiveSubjects] = useState(() => {
+    const saved = localStorage.getItem('prepzone_active_subjects');
+    return saved ? JSON.parse(saved) : DEFAULT_SUBJECTS;
+  });
+
+  const [formData, setFormData] = useState(() => {
+    return activeSubjects.reduce((acc, sub) => ({ ...acc, [sub]: { mcqsDone: 0, correct: 0 } }), {});
+  });
+
   const [timeSpent, setTimeSpent] = useState(0);
   const [newSubjectName, setNewSubjectName] = useState('');
   const [isAdding, setIsAdding] = useState(false);
   const [showCongrats, setShowCongrats] = useState(false);
   const [lastSessionStats, setLastSessionStats] = useState({ totalMCQs: 0, timeSpent: 0 });
+
+  useEffect(() => {
+    localStorage.setItem('prepzone_active_subjects', JSON.stringify(activeSubjects));
+  }, [activeSubjects]);
 
   const handleInputChange = (subject, field, value) => {
     setFormData({

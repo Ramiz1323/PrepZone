@@ -12,6 +12,7 @@ import trackerRoutes from './modules/tracker/tracker.routes.js';
 import analyticsRoutes from './modules/analytics/analytics.routes.js';
 import mistakesRoutes from './modules/mistakes/mistakes.routes.js';
 import revisionRoutes from './modules/revision/revision.routes.js';
+import practiceRoutes from './modules/practice/practice.routes.js';
 
 const app = express();
 
@@ -57,6 +58,7 @@ app.use('/api/tracker', trackerRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/mistakes', mistakesRoutes);
 app.use('/api/revision', revisionRoutes);
+app.use('/api/practice', practiceRoutes);
 
 app.use((req, res) => {
   res.status(404).json({

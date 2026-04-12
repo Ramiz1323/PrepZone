@@ -1,17 +1,25 @@
 import React, { useEffect } from 'react';
 import { FiCpu, FiAlertTriangle } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchSuggestions } from '../../store/slices/dashboardSlice';
+import { fetchSuggestions, fetchCalendarData } from '../../store/slices/dashboardSlice';
+import ConsistencyHeatmap from './components/ConsistencyHeatmap';
 import GlassCard from '../../components/GlassCard';
 import { SkeletonCard, SkeletonText } from '../../components/Skeleton';
 import '../../styles/pages/_analytics.scss';
 
 const Analytics = () => {
   const dispatch = useDispatch();
-  const { suggestions: data, suggestionsLoading: loading, summary } = useSelector((state) => state.dashboard);
+  const { 
+    suggestions: data, 
+    suggestionsLoading: loading, 
+    summary,
+    calendarData,
+    calendarLoading
+  } = useSelector((state) => state.dashboard);
 
   useEffect(() => {
     dispatch(fetchSuggestions());
+    dispatch(fetchCalendarData()); // Fetches current year activity
   }, [dispatch]);
 
   return (
@@ -20,6 +28,8 @@ const Analytics = () => {
         <h1>AI Insights & Suggestions</h1>
         <p>Personalized study recommendations based on your performance.</p>
       </div>
+
+      <ConsistencyHeatmap data={calendarData} loading={calendarLoading} />
 
       {loading ? (
         <>
