@@ -20,6 +20,10 @@
       gap: 12px;
       margin-bottom: 8px;
 
+      @media (max-width: 480px) {
+        font-size: 1.8rem;
+      }
+
       svg {
         color: $accent-primary;
         filter: drop-shadow(0 0 10px rgba($accent-primary, 0.4));
@@ -29,6 +33,9 @@
     p {
       color: $text-secondary;
       font-size: 1.1rem;
+      @media (max-width: 480px) {
+        font-size: 0.9rem;
+      }
     }
   }
 
@@ -109,6 +116,9 @@
             .day-summary {
               font-size: 0.9rem;
               color: $text-secondary;
+              @media (max-width: 480px) {
+                font-size: 0.8rem;
+              }
             }
           }
         }
@@ -175,7 +185,7 @@
             min-width: 100px;
 
             @media (max-width: 768px) {
-              min-width: 70px;
+              min-width: 60px;
             }
 
             .time-stamp {
@@ -234,7 +244,7 @@
                   font-size: 1.1rem;
 
                   @media (max-width: 480px) {
-                    font-size: 1rem;
+                    font-size: 0.9rem;
                   }
                 }
               }
@@ -259,8 +269,19 @@
                   padding: 3px 10px;
                 }
 
-                .sub-name { font-size: 0.9rem; font-weight: 600; color: $text-secondary; }
-                .sub-counts { font-size: 0.85rem; color: $accent-primary; font-weight: 700; opacity: 0.8; }
+                .sub-name { 
+                  font-size: 0.9rem; 
+                  font-weight: 600; 
+                  color: $text-secondary; 
+                  @media (max-width: 480px) { font-size: 0.8rem; }
+                }
+                .sub-counts { 
+                  font-size: 0.85rem; 
+                  color: $accent-primary; 
+                  font-weight: 700; 
+                  opacity: 0.8; 
+                  @media (max-width: 480px) { font-size: 0.75rem; }
+                }
               }
             }
 

@@ -73,23 +73,42 @@ const Practice = () => {
             <SkeletonCard />
           </>
         ) : filteredTests.length > 0 ? (
-          filteredTests.map(test => (
-            <GlassCard key={test._id} className="test-card">
-              <div className="subject-badge">{test.subject}</div>
-              <h3>{test.topic || 'General Practice'}</h3>
-              <div className="test-meta">
-                <span><FiBookOpen /> {test.totalQuestions} Questions</span>
-                {test.isTimed && <span><FiClock /> {test.timeLimit} Min</span>}
-              </div>
-              <Button 
-                variant="secondary" 
-                className="start-btn"
-                onClick={() => navigate(`/practice/${test._id}`)}
-              >
-                <FiPlay /> Start Test
-              </Button>
-            </GlassCard>
-          ))
+          filteredTests.map(test => {
+            const hasAttempt = !!test.lastAttempt?.date;
+            const lastAttemptDate = hasAttempt ? new Date(test.lastAttempt.date).toLocaleDateString(undefined, {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric'
+            }) : null;
+
+            return (
+              <GlassCard key={test._id} className={`test-card ${hasAttempt ? 'attempted' : ''}`}>
+                <div className="subject-badge">{test.subject}</div>
+                <h3>{test.topic || 'General Practice'}</h3>
+                <div className="test-meta">
+                  <span><FiBookOpen /> {test.totalQuestions} Questions</span>
+                  {test.isTimed && <span><FiClock /> {test.timeLimit} Min</span>}
+                  <span className={`difficulty-badge ${test.difficulty?.toLowerCase()}`}>
+                    {test.difficulty || 'Medium'}
+                  </span>
+                </div>
+
+                {hasAttempt && (
+                  <div className="last-attempt-info">
+                    Last Attempt: {lastAttemptDate}
+                  </div>
+                )}
+
+                <Button 
+                  variant={hasAttempt ? 'secondary' : 'primary'}
+                  className="start-btn"
+                  onClick={() => navigate(`/practice/${test._id}`)}
+                >
+                  <FiPlay /> {hasAttempt ? 'Re Test' : 'Start Test'}
+                </Button>
+              </GlassCard>
+            );
+          })
         ) : (
           <div className="empty-state">
             <FiUploadCloud size={48} />

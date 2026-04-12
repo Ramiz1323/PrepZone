@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { FiHome, FiEdit3, FiPieChart, FiAlertCircle, FiList, FiClock, FiBookOpen } from 'react-icons/fi';
+import { FiHome, FiEdit3, FiPieChart, FiAlertCircle, FiList, FiClock, FiBookOpen, FiCalendar } from 'react-icons/fi';
 import clsx from 'clsx';
 import '../styles/components/_sidebar.scss';
 
@@ -8,12 +8,13 @@ import ActivityTimeline from './ActivityTimeline';
 
 const NAV_ITEMS = [
   { path: '/dashboard', name: 'Dashboard', icon: FiHome },
+  { path: '/planner', name: 'Study Planner', icon: FiCalendar },
   { path: '/tracker', name: 'Tracker', icon: FiEdit3 },
-  { path: '/practice', name: 'MCQ Master', icon: FiBookOpen },
-  { path: '/history', name: 'History', icon: FiClock },
+  { path: '/practice', name: 'MCQ Tests', icon: FiBookOpen },
   { path: '/analytics', name: 'Analytics', icon: FiPieChart },
-  { path: '/mistakes', name: 'Mistakes Log', icon: FiAlertCircle },
   { path: '/revision', name: 'Revision', icon: FiList },
+  { path: '/mistakes', name: 'Mistakes Log', icon: FiAlertCircle },
+  { path: '/history', name: 'History', icon: FiClock },
 ];
 
 const Sidebar = ({ isOpen, setOpen }) => {

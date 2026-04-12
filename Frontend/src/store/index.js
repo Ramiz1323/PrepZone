@@ -5,6 +5,7 @@ import trackerReducer from './slices/trackerSlice';
 import mistakesReducer from './slices/mistakesSlice';
 import revisionReducer from './slices/revisionSlice';
 import practiceReducer from './slices/practiceSlice';
+import plannerReducer from './slices/plannerSlice';
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     mistakes: mistakesReducer,
     revision: revisionReducer,
     practice: practiceReducer,
+    planner: plannerReducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
 });

@@ -48,19 +48,24 @@ export const upsertTrackerEntry = async (userId, payload) => {
       existing.notes = existing.notes ? `${existing.notes} | ${notes}` : notes;
     }
 
+    // 5. Add to sessions list
+    existing.sessions.push({
+      subjects: incomingSubjects,
+      totalMCQs: incomingTotal,
+      timeSpent,
+      notes,
+      timestamp: new Date()
+    });
+
     // 6. Update user XP and streak
     const user = await User.findById(userId);
     if (user) {
-      // Calculate XP for this session
       const baseXP = (incomingTotal * 10) + (timeSpent * 1);
       const accuracyMultiplier = incomingAccuracy >= 80 ? 1.2 : 1.0;
       const xpEarned = Math.round(baseXP * accuracyMultiplier);
       
       user.xp = (user.xp || 0) + xpEarned;
-      
-      // Check for level up (e.g., 1000 XP per level)
-      const nextLevelThreshold = user.level * 1000;
-      if (user.xp >= nextLevelThreshold) {
+      if (user.xp >= user.level * 1000) {
         user.level += 1;
       }
 
@@ -68,7 +73,6 @@ export const upsertTrackerEntry = async (userId, payload) => {
       await user.save({ validateModifiedOnly: true });
     }
 
-    
     await existing.save();
 
     return { log: existing, user };

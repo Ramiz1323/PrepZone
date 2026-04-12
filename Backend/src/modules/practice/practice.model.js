@@ -16,7 +16,13 @@ const practiceTestSchema = new mongoose.Schema(
     ],
     isTimed: { type: Boolean, default: false },
     timeLimit: { type: Number, default: 0 },
+    difficulty: { type: String, enum: ['Easy', 'Medium', 'Hard'], default: 'Medium' },
     totalQuestions: { type: Number, required: true },
+    lastAttempt: {
+      date: { type: Date },
+      score: { type: Number },
+      accuracy: { type: Number }
+    }
   },
   { timestamps: true }
 );
@@ -28,6 +34,7 @@ const questionBankSchema = new mongoose.Schema(
     question: { type: String, required: true },
     options: [{ type: String, required: true }],
     answer: { type: Number, required: true },
+    difficulty: { type: String, enum: ['Easy', 'Medium', 'Hard'], default: 'Medium' },
     sourceTestId: { type: mongoose.Schema.Types.ObjectId, ref: 'PracticeTest' },
     addedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   },

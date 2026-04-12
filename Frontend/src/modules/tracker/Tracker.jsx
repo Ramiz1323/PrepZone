@@ -6,6 +6,7 @@ import GlassCard from '../../components/GlassCard';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import CongratsModal from '../../components/CongratsModal';
+import { getLocalDateString } from '../../utils/dateUtils';
 import '../../styles/pages/_tracker.scss';
 
 const DEFAULT_SUBJECTS = [
@@ -78,7 +79,7 @@ const Tracker = () => {
     if (totalMCQs === 0) return alert("Please log some MCQs.");
     if (timeSpent <= 0) return alert("Please enter the time spent in minutes.");
 
-    const date = new Date().toISOString().split('T')[0];
+    const date = getLocalDateString();
     const result = await dispatch(submitLog({ subjects: subjectsToSubmit, timeSpent, date }));
     
     if (result.meta.requestStatus === 'fulfilled') {

@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import GlassCard from '../../../components/GlassCard';
 import { SkeletonText } from '../../../components/Skeleton';
+import { getLocalDateString } from '../../../utils/dateUtils';
 import './Heatmap.scss';
 
 const LEVEL_COLORS = {
@@ -43,7 +44,7 @@ const ConsistencyHeatmap = ({ data, loading }) => {
     for (let w = 0; w < weeks; w++) {
       const week = [];
       for (let d = 0; d < daysPerWeek; d++) {
-        const dateStr = iterDate.toISOString().split('T')[0];
+        const dateStr = getLocalDateString(iterDate);
         const activity = dataMap.get(dateStr) || { level: 0, totalMCQs: 0 };
         
         week.push({

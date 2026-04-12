@@ -6,7 +6,7 @@ export const fetchMyTests = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get('/practice/my-tests');
-      return response.data.data.tests;
+      return response.data.tests;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || 'Failed to load tests');
     }
@@ -18,7 +18,7 @@ export const fetchTestDetails = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const response = await api.get(`/practice/${id}`);
-      return response.data.data.test;
+      return response.data.test;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || 'Failed to load test details');
     }
@@ -30,7 +30,7 @@ export const importNewTest = createAsyncThunk(
   async (testData, { rejectWithValue }) => {
     try {
       const response = await api.post('/practice/import', testData);
-      return response.data.data.test;
+      return response.data.test;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || 'Failed to import test');
     }
@@ -42,7 +42,7 @@ export const submitTestResult = createAsyncThunk(
   async ({ testId, resultData }, { rejectWithValue }) => {
     try {
       const response = await api.post(`/practice/${testId}/submit`, resultData);
-      return response.data.data.result;
+      return response.data.result;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || 'Failed to submit results');
     }

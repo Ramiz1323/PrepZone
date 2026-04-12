@@ -5,7 +5,7 @@ import { upsertTrackerEntry } from '../tracker/tracker.service.js';
  * Import a new MCQ test and populate the Global Question Bank
  */
 export const importPracticeTest = async (userId, payload) => {
-  const { title, subject, topic, questions, isTimed, timeLimit } = payload;
+  const { title, subject, topic, questions, isTimed, timeLimit, difficulty } = payload;
 
   // 1. Create the Practice Test for the user
   const newTest = await PracticeTest.create({
@@ -16,6 +16,7 @@ export const importPracticeTest = async (userId, payload) => {
     questions,
     isTimed,
     timeLimit,
+    difficulty,
     totalQuestions: questions.length
   });
 
@@ -25,6 +26,7 @@ export const importPracticeTest = async (userId, payload) => {
     question: q.question,
     options: q.options,
     answer: q.answer,
+    difficulty: difficulty || 'Medium',
     sourceTestId: newTest._id,
     addedBy: userId
   }));
@@ -94,6 +96,15 @@ export const submitTestResult = async (userId, testId, resultData) => {
     
     // Call existing tracker service to update daily stats
     await upsertTrackerEntry(userId, trackerPayload);
+
+    // 3. Update the Test with last attempt info
+    await PracticeTest.findByIdAndUpdate(testId, {
+      lastAttempt: {
+        date: new Date(),
+        score,
+        accuracy
+      }
+    });
   }
 
   return result;

@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { FiClock, FiCheckCircle, FiXCircle, FiArrowRight, FiAward, FiHome } from 'react-icons/fi';
+import { FiClock, FiCheckCircle, FiXCircle, FiArrowRight, FiAward, FiHome, FiBookOpen } from 'react-icons/fi';
 import { fetchTestDetails, submitTestResult, resetPracticeState } from '../../store/slices/practiceSlice';
 import GlassCard from '../../components/GlassCard';
 import Button from '../../components/Button';
 import PageLoader from '../../components/PageLoader';
 import confetti from 'canvas-confetti';
+import { getLocalDateString } from '../../utils/dateUtils';
 import '../../styles/pages/_practice.scss';
 
 const PracticePlayer = () => {
@@ -42,12 +43,12 @@ const PracticePlayer = () => {
     }
   }, [timeLeft, isFinished, currentTest]);
 
-  const handleFinish = useCallback(() => {
+  const handleFinish = useCallback((finalAnswers = answers) => {
     if (isFinished) return;
     setIsFinished(true);
 
-    // Calculate score
-    const score = answers.reduce((acc, ans, idx) => {
+    // Calculate score using passed answers to avoid stale state
+    const score = finalAnswers.reduce((acc, ans, idx) => {
       return ans === currentTest.questions[idx].answer ? acc + 1 : acc;
     }, 0);
 
@@ -55,24 +56,51 @@ const PracticePlayer = () => {
       score,
       totalQuestions: currentTest.questions.length,
       timeTaken: currentTest.isTimed ? (currentTest.timeLimit * 60 - timeLeft) : 0,
-      date: new Date().toISOString().split('T')[0]
+      date: getLocalDateString()
     };
 
     dispatch(submitTestResult({ testId: id, resultData }));
 
-    if (score / currentTest.questions.length >= 0.8) {
+    const accuracy = score / currentTest.questions.length;
+    console.log('Result Calculated:', { score, total: currentTest.questions.length, accuracy });
+
+    if (accuracy >= 0.8) {
+      // Basic Pop
       confetti({
         particleCount: 150,
         spread: 70,
         origin: { y: 0.6 },
         colors: ['#6366f1', '#f43f5e', '#fbbf24']
       });
+
+      // Special 'Patakha' animation for 90%+
+      if (accuracy >= 0.9) {
+        console.log('Triggering Patakha!');
+        const duration = 2.5 * 1000;
+        const animationEnd = Date.now() + duration;
+        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+        const randomInRange = (min, max) => Math.random() * (max - min) + min;
+
+        const interval = setInterval(function() {
+          const timeLeft = animationEnd - Date.now();
+
+          if (timeLeft <= 0) {
+            return clearInterval(interval);
+          }
+
+          const particleCount = 50 * (timeLeft / duration);
+          // Firing from the sides
+          confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: randomInRange(0.4, 0.6) } });
+          confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: randomInRange(0.4, 0.6) } });
+        }, 250);
+      }
     }
   }, [id, answers, currentTest, timeLeft, isFinished, dispatch]);
 
   const handleNext = () => {
     if (selectedOption === null) return;
-    
+
     const newAnswers = [...answers];
     newAnswers[currentIndex] = selectedOption;
     setAnswers(newAnswers);
@@ -81,7 +109,7 @@ const PracticePlayer = () => {
       setCurrentIndex(prev => prev + 1);
       setSelectedOption(answers[currentIndex + 1] ?? null);
     } else {
-      handleFinish();
+      handleFinish(newAnswers);
     }
   };
 
@@ -120,7 +148,7 @@ const PracticePlayer = () => {
               <p>{formatTime(currentTest.isTimed ? (currentTest.timeLimit * 60 - timeLeft) : 0)}</p>
             </div>
           </div>
-          
+
           <div className="actions">
             <Button variant="secondary" onClick={() => navigate('/practice')}>
               <FiBookOpen /> Back to Library
@@ -149,7 +177,7 @@ const PracticePlayer = () => {
             </div>
           </div>
         </div>
-        
+
         {currentTest.isTimed && (
           <div className={`timer-badge ${timeLeft < 60 ? 'critical' : ''}`}>
             <FiClock /> {formatTime(timeLeft)}
@@ -160,10 +188,10 @@ const PracticePlayer = () => {
       <div className="question-container">
         <GlassCard className="question-card">
           <p className="question-text">{currentQ.question}</p>
-          
+
           <div className="options-grid">
             {currentQ.options.map((opt, idx) => (
-              <div 
+              <div
                 key={idx}
                 className={`option-item ${selectedOption === idx ? 'selected' : ''}`}
                 onClick={() => setSelectedOption(idx)}
@@ -177,8 +205,8 @@ const PracticePlayer = () => {
       </div>
 
       <div className="player-footer">
-        <Button 
-          variant="secondary" 
+        <Button
+          variant="secondary"
           disabled={currentIndex === 0}
           onClick={() => {
             setCurrentIndex(prev => prev - 1);
@@ -187,12 +215,12 @@ const PracticePlayer = () => {
         >
           Previous
         </Button>
-        <Button 
-          onClick={handleNext} 
+        <Button
+          onClick={handleNext}
           disabled={selectedOption === null || submitLoading}
           isLoading={submitLoading && currentIndex === currentTest.questions.length - 1}
         >
-          {currentIndex === currentTest.questions.length - 1 ? 'Finish Test' : 'Next Question'} 
+          {currentIndex === currentTest.questions.length - 1 ? 'Finish Test' : 'Next Question'}
           <FiArrowRight style={{ marginLeft: 8 }} />
         </Button>
       </div>

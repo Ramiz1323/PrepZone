@@ -6,6 +6,7 @@ import {
 } from 'recharts';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDashboardData, updateDailyGoal } from '../../store/slices/dashboardSlice';
+import { fetchPlanner } from '../../store/slices/plannerSlice';
 import GlassCard from '../../components/GlassCard';
 import { SkeletonCard, SkeletonChart } from '../../components/Skeleton';
 import { getSubjectColor } from '../../utils/chartUtils';
@@ -20,7 +21,14 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(fetchDashboardData());
+    dispatch(fetchPlanner());
   }, [dispatch]);
+
+  const { data: plannerData } = useSelector((state) => state.planner);
+  const todayStr = new Date().toISOString().split('T')[0];
+  const todayPlan = plannerData?.plans?.find(p => p.date === todayStr);
+  const todayEntry = weekly?.dailyBreakdown?.find(d => d.date === todayStr);
+  const totalMCQsToday = todayEntry?.totalMCQs || 0;
 
   const subjectData = Object.keys(summary?.subjectAccuracy || {}).map(sub => ({
     name: sub,
@@ -74,6 +82,36 @@ const Dashboard = () => {
         <h1>Overview</h1>
         <p>Your JECA preparation summary.</p>
       </div>
+
+      {todayPlan && (
+        <GlassCard className="today-target-card">
+          <div className="card-badge">🎯 Today's Mission</div>
+          <div className="card-content">
+            <div className="main-info">
+              <h2>{todayPlan.subject}</h2>
+              <div className="topics">
+                {todayPlan.topics?.map(topic => (
+                  <span key={topic} className="topic-tag">{topic}</span>
+                ))}
+              </div>
+            </div>
+            <div className="target-stats">
+              <div className="target-mcq">
+                <span className="label">Target</span>
+                <span className="value">{todayPlan.mcqTarget} MCQs</span>
+              </div>
+              <div className="progress-mini">
+                <div className="progress-bar">
+                  <div 
+                    className="progress-fill" 
+                    style={{ width: `${Math.min((totalMCQsToday / todayPlan.mcqTarget) * 100, 100) || 0}%` }}
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </GlassCard>
+      )}
 
       <div className="stats-grid">
         {loading ? (
