@@ -3,7 +3,7 @@ import { Planner } from './planner.model.js';
 // Get all planners for selection
 export const listPlanners = async (req, res) => {
   try {
-    const planners = await Planner.find({ userId: req.user._id })
+    const planners = await Planner.find({ userId: req.user.id })
       .select('title isActive lastImported createdAt')
       .sort({ updatedAt: -1 });
     res.json({ success: true, data: planners });
@@ -16,7 +16,7 @@ export const listPlanners = async (req, res) => {
 export const getPlanner = async (req, res) => {
   try {
     const { id } = req.params;
-    let query = { userId: req.user._id };
+    let query = { userId: req.user.id };
     
     // If ID is provided, find by ID, otherwise find the active one
     if (id && id !== 'active') {
@@ -29,7 +29,7 @@ export const getPlanner = async (req, res) => {
     
     // Fallback: If no active plan, get the most recent one
     if (!planner && query.isActive) {
-      planner = await Planner.findOne({ userId: req.user._id }).sort({ updatedAt: -1 });
+      planner = await Planner.findOne({ userId: req.user.id }).sort({ updatedAt: -1 });
     }
 
     res.json({ success: true, data: planner || { plans: [], title: 'New Plan' } });
@@ -50,14 +50,14 @@ export const updatePlanner = async (req, res) => {
 
     // If isActive is becoming true, deactivate all other plans for this user
     if (isActive) {
-      await Planner.updateMany({ userId: req.user._id }, { isActive: false });
+      await Planner.updateMany({ userId: req.user.id }, { isActive: false });
     }
 
     let planner;
     if (id && id !== 'new') {
       // Update existing
       planner = await Planner.findOneAndUpdate(
-        { _id: id, userId: req.user._id },
+        { _id: id, userId: req.user.id },
         { 
           ...(plans && { plans }),
           ...(title && { title }),
@@ -69,7 +69,7 @@ export const updatePlanner = async (req, res) => {
     } else {
       // Create new
       planner = await Planner.create({
-        userId: req.user._id,
+        userId: req.user.id,
         title: title || 'My Plan',
         plans: plans || [],
         isActive: isActive !== undefined ? isActive : true
@@ -88,11 +88,11 @@ export const setActivePlan = async (req, res) => {
     const { id } = req.params;
     
     // Deactivate all
-    await Planner.updateMany({ userId: req.user._id }, { isActive: false });
+    await Planner.updateMany({ userId: req.user.id }, { isActive: false });
     
     // Activate specific
     const planner = await Planner.findOneAndUpdate(
-      { _id: id, userId: req.user._id },
+      { _id: id, userId: req.user.id },
       { isActive: true },
       { new: true }
     );
@@ -106,7 +106,7 @@ export const setActivePlan = async (req, res) => {
 export const deletePlanner = async (req, res) => {
   try {
     const { id } = req.params;
-    await Planner.findOneAndDelete({ _id: id, userId: req.user._id });
+    await Planner.findOneAndDelete({ _id: id, userId: req.user.id });
     res.json({ success: true, message: 'Planner deleted successfully' });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
