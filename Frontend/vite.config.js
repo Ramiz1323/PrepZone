@@ -7,6 +7,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'prompt', // Changed to prompt for ReloadPrompt support
+      injectRegister: 'script', 
       includeAssets: ['logo.png'],
       manifest: {
         name: 'PrepZone — JECA Prep Tracker',
@@ -15,6 +16,8 @@ export default defineConfig({
         theme_color: '#ef4444',
         background_color: '#0a0a0a',
         display: 'standalone',
+        scope: '/',
+        start_url: '/',
         icons: [
           {
             src: 'logo.png',
@@ -39,6 +42,12 @@ export default defineConfig({
             purpose: 'maskable'
           }
         ]
+      },
+      workbox: {
+        cleanupOutdatedCaches: true,
+        clientsClaim: true,
+        skipWaiting: true,
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest}']
       },
       devOptions: {
         enabled: true, // Enable SW in development
