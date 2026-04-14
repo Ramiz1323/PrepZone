@@ -1,10 +1,12 @@
 import { connectDB } from './src/shared/config/db.js';
 import { env } from './src/shared/config/env.js';
 import { logger } from './src/shared/utils/logger.js';
+import { seedColleges } from './src/modules/college/college.service.js';
 import app from './src/app.js';
 
 const startServer = async () => {
   await connectDB();
+  await seedColleges();
 
   const server = app.listen(env.PORT, () => {
     logger.info(`PrepZone running on port ${env.PORT} [${env.NODE_ENV}]`);

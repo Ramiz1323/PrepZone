@@ -46,6 +46,10 @@ const userSchema = new mongoose.Schema(
       generatedAt: { type: Date, default: null },
       totalMCQsAtGen: { type: Number, default: 0 },
     },
+    targetColleges: {
+      type: [String],
+      default: [],
+    },
   },
   { timestamps: true }
 );

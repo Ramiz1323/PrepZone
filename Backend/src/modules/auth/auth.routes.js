@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { register, login, getMe, logout, updateGoal } from './auth.controller.js';
+import { register, login, getMe, logout, updateGoal, updateTargets } from './auth.controller.js';
 import { registerValidation, loginValidation } from './auth.validation.js';
 import { authenticate } from '../../shared/middleware/auth.middleware.js';
 import { authLimiter } from '../../shared/middleware/rateLimiter.js';
@@ -11,5 +11,6 @@ router.post('/login', authLimiter, loginValidation, login);
 router.post('/logout', logout);
 router.get('/me', authenticate, getMe);
 router.patch('/goal', authenticate, updateGoal);
+router.patch('/target-colleges', authenticate, updateTargets);
 
 export default router;

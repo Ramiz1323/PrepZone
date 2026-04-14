@@ -14,6 +14,7 @@ import mistakesRoutes from './modules/mistakes/mistakes.routes.js';
 import revisionRoutes from './modules/revision/revision.routes.js';
 import practiceRoutes from './modules/practice/practice.routes.js';
 import plannerRoutes from './modules/planner/planner.routes.js';
+import collegeRoutes from './modules/college/college.routes.js';
 
 const app = express();
 app.set('trust proxy', 1);
@@ -62,6 +63,7 @@ app.use('/api/mistakes', mistakesRoutes);
 app.use('/api/revision', revisionRoutes);
 app.use('/api/practice', practiceRoutes);
 app.use('/api/planner', plannerRoutes);
+app.use('/api/colleges', collegeRoutes);
 
 app.use((req, res) => {
   res.status(404).json({

@@ -25,10 +25,16 @@ const updateGoal = async (goal) => {
   return response.data;
 };
 
+const updateTargetColleges = async (colleges) => {
+  const response = await api.patch('/auth/target-colleges', { targetColleges: colleges });
+  return response.data;
+};
+
 export const authService = {
   login,
   register,
   logout,
   getMe,
   updateGoal,
+  updateTargetColleges,
 };

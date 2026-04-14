@@ -89,3 +89,20 @@ export const updateDailyGoal = async (userId, goal) => {
   const { password, ...safeUser } = user;
   return safeUser;
 };
+
+export const updateTargetColleges = async (userId, targetColleges) => {
+  const user = await User.findByIdAndUpdate(
+    userId,
+    { targetColleges },
+    { new: true, runValidators: true }
+  ).lean();
+
+  if (!user) {
+    const error = new Error('User not found.');
+    error.statusCode = 404;
+    throw error;
+  }
+
+  const { password, ...safeUser } = user;
+  return safeUser;
+};

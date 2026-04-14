@@ -6,17 +6,33 @@
 
   .header-section {
     margin-bottom: 2.5rem;
-    h1 {
-      font-size: 2.2rem;
-      margin-bottom: 0.5rem;
-      background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      h1 {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 2.2rem;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
 
-      @media (max-width: 480px) {
-        font-size: 1.75rem;
+        .pro-badge {
+          font-size: 0.75rem;
+          padding: 0.2rem 0.6rem;
+          background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+          -webkit-background-clip: initial;
+          -webkit-text-fill-color: #fff;
+          border-radius: 4px;
+          text-transform: uppercase;
+          font-weight: 800;
+          letter-spacing: 1px;
+          box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+        }
+
+        @media (max-width: 480px) {
+          font-size: 1.75rem;
+        }
       }
-    }
     p { 
       color: #94a3b8; 
       font-size: 1.1rem;
@@ -114,7 +130,28 @@
       border-radius: 20px;
       font-size: 0.85rem;
       font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .engine-status {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #64748b;
+      font-weight: 700;
       margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      &::before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        background: #10b981;
+        border-radius: 50%;
+        box-shadow: 0 0 8px #10b981;
+      }
     }
 
     .rank-display {
@@ -228,43 +265,103 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 1.5rem;
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
+
+    &.target-grid {
+      .college-card {
+        background: rgba(99, 102, 241, 0.05);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 0 0 15px rgba(99, 102, 241, 0.1);
+        
+        .cutoff-hint {
+          color: #a5b4fc;
+        }
+      }
+    }
   }
 
   .college-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     padding: 1.5rem;
-    transition: transform 0.3s ease;
-    
-    &:hover { transform: translateY(-5px); }
+    transition: all 0.3s ease;
+    height: 100%;
+
+    &:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
 
     .college-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       margin-bottom: 1.25rem;
+      gap: 1rem;
 
-      h4 { font-size: 1.1rem; margin-bottom: 0.25rem; color: #fff; }
-      
-      .college-meta {
+      .college-info-group {
+        flex: 1;
+        h4 {
+          color: #fff;
+          font-size: 1.1rem;
+          font-weight: 600;
+          margin: 0 0 0.5rem 0;
+          line-height: 1.4;
+        }
+      }
+
+      .action-group {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.75rem;
+      }
+
+      .prob-badge {
+        padding: 0.35rem 0.75rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+
+        &.prob-high { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+        &.prob-mid { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+        &.prob-low { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+        &.prob-none { background: rgba(100, 116, 139, 0.15); color: #94a3b8; }
+      }
+
+      .pin-btn {
+        background: none;
+        border: none;
+        color: #64748b;
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 50%;
+        transition: all 0.2s ease;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
-        font-size: 0.85rem;
-        color: #94a3b8;
-        .separator { color: #334155; }
-      }
-    }
+        justify-content: center;
 
-    .prob-badge {
-      padding: 0.25rem 0.75rem;
-      border-radius: 12px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      
-      &.prob-high { background: rgba(16, 185, 129, 0.1); color: #10b981; }
-      &.prob-mid { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
-      &.prob-low { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
-      &.prob-none { background: rgba(100, 116, 139, 0.1); color: #64748b; }
+        &:hover:not(:disabled) {
+          color: #fff;
+          background: rgba(255, 255, 255, 0.1);
+        }
+
+        &.active {
+          color: #818cf8;
+          transform: scale(1.15);
+          filter: drop-shadow(0 0 5px rgba(129, 140, 248, 0.4));
+        }
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
     }
 
     .college-footer {

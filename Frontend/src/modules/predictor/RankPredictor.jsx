@@ -1,28 +1,66 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDashboardData } from '../../store/slices/dashboardSlice';
 import { calculateWBJECAReadiness } from '../../utils/predictionUtils';
+import collegeService from '../../services/college.service';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
-import { FiTrendingUp, FiAward, FiCheckCircle, FiInfo, FiMapPin, FiBriefcase } from 'react-icons/fi';
+import { FiTrendingUp, FiAward, FiCheckCircle, FiInfo, FiMapPin, FiBriefcase, FiStar } from 'react-icons/fi';
+import { updateTargetColleges } from '../../store/slices/authSlice';
 import GlassCard from '../../components/GlassCard';
 import PageLoader from '../../components/PageLoader';
 import '../../styles/pages/_predictor.scss';
 
 const RankPredictor = () => {
   const dispatch = useDispatch();
-  const { summary, loading } = useSelector((state) => state.dashboard);
+  const { summary, loading: dashboardLoading } = useSelector((state) => state.dashboard);
+  const { user, loading: authLoading } = useSelector((state) => state.auth);
+  const [colleges, setColleges] = useState([]);
+  const [localLoading, setLocalLoading] = useState(true);
+
+  const targetColleges = user?.targetColleges || [];
 
   useEffect(() => {
-    if (!summary) {
-      dispatch(fetchDashboardData());
-    }
+    const loadData = async () => {
+      try {
+        if (!summary) {
+          dispatch(fetchDashboardData());
+        }
+        const collegeData = await collegeService.getColleges();
+        setColleges(collegeData);
+      } catch (error) {
+        console.error('Failed to load predictor data:', error);
+      } finally {
+        setLocalLoading(false);
+      }
+    };
+
+    loadData();
   }, [dispatch, summary]);
 
   const results = useMemo(() => {
-    return calculateWBJECAReadiness(summary);
-  }, [summary]);
+    return calculateWBJECAReadiness(summary, colleges);
+  }, [summary, colleges]);
 
-  if (loading && !summary) return <PageLoader />;
+  const handleTogglePin = (collegeName) => {
+    let newTargets;
+    if (targetColleges.includes(collegeName)) {
+      newTargets = targetColleges.filter(name => name !== collegeName);
+    } else {
+      newTargets = [...targetColleges, collegeName];
+    }
+    dispatch(updateTargetColleges(newTargets));
+  };
+
+  // Separate pinned vs others
+  const { pinnedMatches, otherMatches } = useMemo(() => {
+    const matches = results?.collegeMatches ?? [];
+    return {
+      pinnedMatches: matches.filter(c => targetColleges.includes(c.name)),
+      otherMatches: matches.filter(c => !targetColleges.includes(c.name))
+    };
+  }, [results, targetColleges]);
+
+  if (dashboardLoading && !summary) return <PageLoader />;
 
   const gaugeData = [
     { name: 'Readiness', value: results.readiness },
@@ -41,8 +79,8 @@ const RankPredictor = () => {
   return (
     <div className="predictor-page">
       <div className="header-section">
-        <h1>WBJECA Rank Predictor</h1>
-        <p>Estimated GMR and college admission chances based on your performance.</p>
+        <h1>WBJECA Rank Predictor <span className="pro-badge">Pro V2</span></h1>
+        <p>High-precision GMR estimation and admission modeling engine.</p>
       </div>
 
       <div className="readiness-grid">
@@ -50,7 +88,7 @@ const RankPredictor = () => {
         <GlassCard className="gauge-card">
           <div className="card-header">
             <h3>Readiness Score</h3>
-            <FiInfo className="info-icon" title="Aggregated from Accuracy, Volume, and Consistency" />
+            <FiInfo className="info-icon" title="Rigorous calculation from Accuracy, Volume, Consistency, and Subject Mastery" />
           </div>
           <div className="gauge-container">
             <ResponsiveContainer width="100%" height={150}>
@@ -88,6 +126,7 @@ const RankPredictor = () => {
         {/* Prediction Card */}
         <GlassCard className="prediction-card">
           <div className="card-badge">🎯 Predicted Rank</div>
+          <div className="engine-status">Modeling Profile: Dynamic Mastery</div>
           <div className="rank-display">
             <span className="label">Estimated GMR</span>
             <h2 className={results.gmr < 500 ? 'top-tier' : ''}>#{results.gmr}</h2>
@@ -112,11 +151,60 @@ const RankPredictor = () => {
         </GlassCard>
       </div>
 
-      {/* College Matcher */}
-      <h2 className="section-title">WBJECA College Probability</h2>
+      {/* Target Institutions Section */}
+      {pinnedMatches.length > 0 && (
+        <>
+          <h2 className="section-title target-title"><FiStar /> Target Institutions</h2>
+          <div className="colleges-grid target-grid">
+            {pinnedMatches.map((college) => {
+              const prob = getProbabilityLabel(college.probability);
+              const isPinned = true;
+              return (
+                <GlassCard key={`target-${college.name}`} className="college-card pinned-card">
+                  <div className="college-header">
+                    <div className="college-info-group">
+                      <h4>{college.name}</h4>
+                      <div className="college-meta">
+                        <span><FiMapPin /> {college.location}</span>
+                        <span className="separator">•</span>
+                        <span>{college.tier}</span>
+                      </div>
+                    </div>
+                    <div className="action-group">
+                      <span className={`prob-badge ${prob.class}`}>{prob.text}</span>
+                      <button 
+                        className={`pin-btn ${isPinned ? 'active' : ''}`}
+                        onClick={() => handleTogglePin(college.name)}
+                        disabled={authLoading}
+                        title="Unpin from targets"
+                      >
+                        <FiStar />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="college-footer">
+                    <span className="cutoff-hint">Predicted GMR Safe Range: {college.minCutoff} - {college.cutoff}</span>
+                    <div className="prob-bar">
+                      <div className="fill" style={{ 
+                        width: `${college.probability}%`, 
+                        backgroundColor: prob.class === 'prob-high' ? '#10b981' : 
+                                       prob.class === 'prob-mid' ? '#f59e0b' : 
+                                       prob.class === 'prob-low' ? '#ef4444' : '#64748b' 
+                      }}></div>
+                    </div>
+                  </div>
+                </GlassCard>
+              );
+            })}
+          </div>
+        </>
+      )}
+
+      {/* Main College List */}
+      <h2 className="section-title">Predicted Opportunities</h2>
       
       {Object.entries(
-        (results?.collegeMatches ?? []).reduce((acc, college) => {
+        (otherMatches).reduce((acc, college) => {
           if (!acc[college.tier]) acc[college.tier] = [];
           acc[college.tier].push(college);
           return acc;
@@ -127,10 +215,11 @@ const RankPredictor = () => {
           <div className="colleges-grid">
             {colleges.map((college) => {
               const prob = getProbabilityLabel(college.probability);
+              const isPinned = targetColleges.includes(college.name);
               return (
                 <GlassCard key={college.name} className="college-card">
                   <div className="college-header">
-                    <div>
+                    <div className="college-info-group">
                       <h4>{college.name}</h4>
                       <div className="college-meta">
                         <span><FiMapPin /> {college.location}</span>
@@ -138,7 +227,17 @@ const RankPredictor = () => {
                         <span>{college.type}</span>
                       </div>
                     </div>
-                    <span className={`prob-badge ${prob.class}`}>{prob.text}</span>
+                    <div className="action-group">
+                      <span className={`prob-badge ${prob.class}`}>{prob.text}</span>
+                      <button 
+                        className={`pin-btn ${isPinned ? 'active' : ''}`}
+                        onClick={() => handleTogglePin(college.name)}
+                        disabled={authLoading}
+                        title="Pin as target institute"
+                      >
+                        <FiStar />
+                      </button>
+                    </div>
                   </div>
                   <div className="college-footer">
                     <span className="cutoff-hint">GMR Range: {college.minCutoff} - {college.cutoff}</span>
@@ -161,8 +260,8 @@ const RankPredictor = () => {
       <div className="readiness-footer-notice">
         <FiAward className="award-icon" />
         <div className="notice-content">
-          <h4>Calculation & Accuracy Disclaimer</h4>
-          <p>Predictions are generated using statistical modeling based on historical WBJECA trends and online data sources. Actual GMR and admission results may vary slightly from these estimates. These values are for reference and preparation guidance only.</p>
+          <h4>Pro V2 Statistical Disclaimer</h4>
+          <p>These predictions are generated using a high-rigor model that penalizes subject-wise gaps and rewards elite accuracy. Actual GMR may vary based on shifting yearly competition density.</p>
         </div>
       </div>
     </div>

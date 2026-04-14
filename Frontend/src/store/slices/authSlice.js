@@ -34,6 +34,15 @@ export const logoutUser = createAsyncThunk('auth/logout', async (_, thunkAPI) =>
   }
 });
 
+export const updateTargetColleges = createAsyncThunk('auth/updateTargets', async (colleges, thunkAPI) => {
+  try {
+    const data = await authService.updateTargetColleges(colleges);
+    return data; // authService already extracts response.data
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.message);
+  }
+});
+
 const initialState = {
   user: null,
   isAuthenticated: false,
@@ -98,6 +107,16 @@ const authSlice = createSlice({
       .addCase(logoutUser.fulfilled, (state) => {
         state.isAuthenticated = false;
         state.user = null;
+      })
+      // Update Target Colleges
+      .addCase(updateTargetColleges.pending, (state) => { state.loading = true; })
+      .addCase(updateTargetColleges.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload; // Already the user object
+      })
+      .addCase(updateTargetColleges.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
       // Tracker Integration
       .addMatcher(

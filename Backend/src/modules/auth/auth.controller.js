@@ -62,3 +62,15 @@ export const updateGoal = asyncHandler(async (req, res) => {
   const user = await authService.updateDailyGoal(req.user.id, dailyMCQGoal);
   return sendSuccess(res, 'Daily goal updated successfully', user);
 });
+
+export const updateTargets = asyncHandler(async (req, res) => {
+  const { targetColleges } = req.body;
+  
+  // Validation: Ensure it's an array of strings
+  if (!Array.isArray(targetColleges)) {
+    return sendError(res, 'Invalid format. targetColleges must be an array.', 400);
+  }
+
+  const user = await authService.updateTargetColleges(req.user.id, targetColleges);
+  return sendSuccess(res, 'Target colleges updated successfully', user);
+});
