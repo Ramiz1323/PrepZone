@@ -25,8 +25,8 @@ const ImportModal = ({ isOpen, onClose, onImport, loading }) => {
   if (!isOpen) return null;
 
   const generatedPrompt = `Generate ${questionCount} ${difficulty} level MCQs for ${subject} on the topic "${topic || '(Topic Name)'}" at a JECA exam difficulty level in valid JSON format. 
-Structure: [ { "question": "...", "options": ["...", "...", "...", "..."], "answer": 0 } ]
-Requirement: Output ONLY the JSON array, no conversational text.`;
+Structure: [ { "question": "...", "codeSnippet": "...", "options": ["...", "...", "...", "..."], "answer": 0 } ]
+Requirement: Output ONLY the JSON array. If a question is code-based, put the code in the "codeSnippet" field (use \n for newlines), otherwise leave it as null or empty string. No conversational text.`;
 
   const handleCopyPrompt = () => {
     navigator.clipboard.writeText(generatedPrompt);
@@ -165,7 +165,7 @@ Requirement: Output ONLY the JSON array, no conversational text.`;
                     <div className="info-tooltip">
                       <FiInfo />
                       <div className="tooltip-text">
-                        Format: [ {"{"} 'question': '...', 'options': ['...'], 'answer': 0 {"}"} ]
+                        Format: [ {"{"} 'question': '...', 'codeSnippet': '...', 'options': ['...'], 'answer': 0 {"}"} ]
                       </div>
                     </div>
                   </div>

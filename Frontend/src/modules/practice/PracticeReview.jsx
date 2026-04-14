@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTestDetails, fetchLatestResult, resetPracticeState } from '../../store/slices/practiceSlice';
-import { FiArrowLeft, FiCheck, FiX, FiBarChart2, FiClock, FiTarget } from 'react-icons/fi';
+import { highlightCode } from '../../utils/highlighter';
+import { FiArrowLeft, FiCheck, FiX, FiBarChart2, FiClock, FiTarget, FiCode } from 'react-icons/fi';
 import GlassCard from '../../components/GlassCard';
 import Button from '../../components/Button';
 import PageLoader from '../../components/PageLoader';
@@ -64,6 +65,22 @@ const PracticeReview = () => {
             <GlassCard key={qIndex} className="review-question-card">
               <span className="question-num">Question {qIndex + 1}</span>
               <div className="question-text">{q.question}</div>
+              
+              {q.codeSnippet && (
+                <div className="code-snippet-box">
+                  <div className="snippet-header">
+                    <span><FiCode /> Code Snippet</span>
+                  </div>
+                  <div className="snippet-content">
+                    <div className="line-numbers">
+                      {q.codeSnippet.split('\n').map((_, i) => (
+                        <div key={i}>{i + 1}</div>
+                      ))}
+                    </div>
+                    <pre dangerouslySetInnerHTML={{ __html: highlightCode(q.codeSnippet) }} />
+                  </div>
+                </div>
+              )}
               
               <div className="options-list">
                 {q.options.map((option, oIndex) => {

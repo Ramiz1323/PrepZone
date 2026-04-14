@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { FiClock, FiCheckCircle, FiXCircle, FiArrowRight, FiAward, FiHome, FiBookOpen } from 'react-icons/fi';
+import { FiClock, FiCheckCircle, FiXCircle, FiArrowRight, FiAward, FiHome, FiBookOpen, FiCode } from 'react-icons/fi';
 import { fetchTestDetails, submitTestResult, resetPracticeState } from '../../store/slices/practiceSlice';
 import GlassCard from '../../components/GlassCard';
 import Button from '../../components/Button';
 import PageLoader from '../../components/PageLoader';
 import confetti from 'canvas-confetti';
 import { getLocalDateString } from '../../utils/dateUtils';
+import { highlightCode } from '../../utils/highlighter';
 import '../../styles/pages/_practice.scss';
 
 const PracticePlayer = () => {
@@ -192,6 +193,22 @@ const PracticePlayer = () => {
       <div className="question-container">
         <GlassCard className="question-card">
           <p className="question-text">{currentQ.question}</p>
+
+          {currentQ.codeSnippet && (
+            <div className="code-snippet-box">
+              <div className="snippet-header">
+                <span><FiCode /> Code Snippet</span>
+              </div>
+              <div className="snippet-content">
+                <div className="line-numbers">
+                  {currentQ.codeSnippet.split('\n').map((_, i) => (
+                    <div key={i}>{i + 1}</div>
+                  ))}
+                </div>
+                <pre dangerouslySetInnerHTML={{ __html: highlightCode(currentQ.codeSnippet) }} />
+              </div>
+            </div>
+          )}
 
           <div className="options-grid">
             {currentQ.options.map((opt, idx) => (

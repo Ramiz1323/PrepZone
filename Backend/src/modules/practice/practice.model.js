@@ -10,6 +10,7 @@ const practiceTestSchema = new mongoose.Schema(
     questions: [
       {
         question: { type: String, required: true },
+        codeSnippet: { type: String },
         options: [{ type: String, required: true }],
         answer: { type: Number, required: true },
       },
@@ -32,6 +33,7 @@ const questionBankSchema = new mongoose.Schema(
   {
     subject: { type: String, required: true, index: true },
     question: { type: String, required: true },
+    codeSnippet: { type: String },
     options: [{ type: String, required: true }],
     answer: { type: Number, required: true },
     difficulty: { type: String, enum: ['Easy', 'Medium', 'Hard'], default: 'Medium' },

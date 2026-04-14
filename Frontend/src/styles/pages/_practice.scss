@@ -527,3 +527,83 @@
     }
   }
 }
+
+// Global Code Snippet Style
+.code-snippet-box {
+  margin: $spacing-lg 0;
+  background: #1e1e1e;
+  border-radius: $border-radius-md;
+  border: 1px solid rgba($white, 0.1);
+  font-family: 'Fira Code', 'Consolas', monospace;
+  overflow: hidden;
+  position: relative;
+  text-align: left;
+
+  .snippet-header {
+    background: rgba($white, 0.05);
+    padding: 8px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba($white, 0.05);
+    
+    span {
+      font-size: 11px;
+      color: $text-muted;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      svg { font-size: 14px; color: $accent-primary; }
+    }
+  }
+
+  .snippet-content {
+    display: flex;
+    padding: 16px 0;
+    overflow-x: auto;
+    font-size: 14px;
+    line-height: 1.5;
+
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
+    &::-webkit-scrollbar-track { background: transparent; }
+    &::-webkit-scrollbar-thumb { 
+      background: rgba($white, 0.1); 
+      border-radius: 4px;
+      &:hover { background: rgba($white, 0.2); }
+    }
+
+    .line-numbers {
+      padding: 0 16px;
+      color: rgba($white, 0.2);
+      text-align: right;
+      user-select: none;
+      border-right: 1px solid rgba($white, 0.05);
+      min-width: 45px;
+    }
+
+    pre {
+      margin: 0;
+      padding: 0 16px;
+      color: #abb2bf;
+      white-space: pre;
+      tab-size: 4;
+      
+      .keyword { color: #c678dd; font-weight: 500; }
+      .string { color: #98c379; }
+      .comment { color: #5c6370; font-style: italic; }
+      .number { color: #d19a66; }
+      .function { color: #61afef; }
+      .operator { color: #56b6c2; }
+      .class { color: #e5c07b; }
+    }
+
+    @media (max-width: 480px) {
+      font-size: 12px;
+      padding: 12px 0;
+    }
+  }
+}
