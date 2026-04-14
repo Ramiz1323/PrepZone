@@ -56,6 +56,7 @@ const PracticePlayer = () => {
       score,
       totalQuestions: currentTest.questions.length,
       timeTaken: currentTest.isTimed ? (currentTest.timeLimit * 60 - timeLeft) : 0,
+      userAnswers: finalAnswers, // Sending detailed answers for review
       date: getLocalDateString()
     };
 
@@ -150,6 +151,9 @@ const PracticePlayer = () => {
           </div>
 
           <div className="actions">
+            <Button variant="outline" onClick={() => navigate(`/practice/review/${id}`)}>
+              <FiCheckCircle /> Review Answers
+            </Button>
             <Button variant="secondary" onClick={() => navigate('/practice')}>
               <FiBookOpen /> Back to Library
             </Button>

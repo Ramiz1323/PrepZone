@@ -9,6 +9,7 @@ router.use(authenticate); // All practice routes require authentication
 router.post('/import', practiceController.importTest);
 router.get('/my-tests', practiceController.getMyTests);
 router.get('/:id', practiceController.getTestDetails);
+router.get('/:id/latest-result', practiceController.getLatestResult);
 router.post('/:id/submit', practiceController.submitResult);
 
 export default router;

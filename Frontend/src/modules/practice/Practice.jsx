@@ -99,13 +99,25 @@ const Practice = () => {
                   </div>
                 )}
 
-                <Button 
-                  variant={hasAttempt ? 'secondary' : 'primary'}
-                  className="start-btn"
-                  onClick={() => navigate(`/practice/${test._id}`)}
-                >
-                  <FiPlay /> {hasAttempt ? 'Re Test' : 'Start Test'}
-                </Button>
+                <div className="card-actions" style={{ display: 'flex', gap: '8px', marginTop: 'auto' }}>
+                  <Button 
+                    variant={hasAttempt ? 'secondary' : 'primary'}
+                    className="start-btn"
+                    style={{ flex: 1 }}
+                    onClick={() => navigate(`/practice/${test._id}`)}
+                  >
+                    <FiPlay /> {hasAttempt ? 'Re Test' : 'Start Test'}
+                  </Button>
+                  {hasAttempt && (
+                    <Button 
+                      variant="outline"
+                      className="review-btn"
+                      onClick={() => navigate(`/practice/review/${test._id}`)}
+                    >
+                      Review
+                    </Button>
+                  )}
+                </div>
               </GlassCard>
             );
           })

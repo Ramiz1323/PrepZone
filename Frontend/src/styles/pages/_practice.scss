@@ -337,3 +337,193 @@
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
 }
+
+.test-review-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: $spacing-xl;
+
+  @media (max-width: 768px) {
+    padding: $spacing-md;
+  }
+
+  .review-header {
+    margin-bottom: $spacing-2xl;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: $spacing-md;
+
+    @media (max-width: 480px) {
+      margin-bottom: $spacing-lg;
+    }
+
+    .header-left {
+      h2 { 
+        font-size: 28px; 
+        margin-bottom: 8px;
+        @media (max-width: 480px) { font-size: 1.5rem; }
+      }
+      p { 
+        color: $text-secondary;
+        @media (max-width: 480px) { font-size: 0.85rem; }
+      }
+    }
+  }
+
+  .review-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: $spacing-lg;
+    margin-bottom: $spacing-2xl;
+
+    @media (max-width: 480px) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: $spacing-md;
+      margin-bottom: $spacing-xl;
+      
+      .stat-card.accuracy {
+        grid-column: span 2;
+      }
+    }
+
+    .stat-card {
+      padding: $spacing-lg;
+      background: rgba($white, 0.03);
+      border: 1px solid rgba($white, 0.05);
+      border-radius: $border-radius-md;
+      text-align: center;
+
+      @media (max-width: 480px) {
+        padding: $spacing-md;
+      }
+
+      label { 
+        font-size: 12px; 
+        color: $text-secondary; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        margin-bottom: 4px; 
+      }
+      p { 
+        font-size: 20px; 
+        font-weight: 700; 
+        color: $text-primary;
+        @media (max-width: 480px) { font-size: 1.1rem; }
+      }
+
+      &.accuracy {
+        border-color: rgba($accent-primary, 0.2);
+        p { color: $accent-primary; }
+      }
+    }
+  }
+
+  .questions-list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xl;
+
+    @media (max-width: 480px) {
+      gap: $spacing-lg;
+    }
+
+    .review-question-card {
+      padding: $spacing-xl;
+      border: 1px solid rgba($white, 0.1);
+
+      @media (max-width: 480px) {
+        padding: $spacing-lg;
+      }
+      
+      .question-num {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 700;
+        color: $text-muted;
+        margin-bottom: $spacing-sm;
+        display: block;
+      }
+
+      .question-text {
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: $spacing-lg;
+        line-height: 1.5;
+        @media (max-width: 480px) { font-size: 1rem; margin-bottom: 1rem; }
+      }
+
+      .options-list {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-sm;
+
+        .option-item {
+          display: flex;
+          align-items: center;
+          gap: $spacing-md;
+          padding: $spacing-md $spacing-lg;
+          background: rgba($white, 0.03);
+          border: 1px solid rgba($white, 0.05);
+          border-radius: $border-radius-sm;
+          font-size: 15px;
+          transition: all 0.2s;
+
+          @media (max-width: 480px) {
+            padding: $spacing-sm $spacing-md;
+            font-size: 0.9rem;
+          }
+
+          &.correct {
+            background: rgba($accent-success, 0.1);
+            border-color: rgba($accent-success, 0.3);
+            color: $accent-success;
+            .prefix { background: $accent-success; color: white; }
+          }
+
+          &.incorrect {
+            background: rgba($accent-danger, 0.1);
+            border-color: rgba($accent-danger, 0.3);
+            color: $accent-danger;
+            .prefix { background: $accent-danger; color: white; }
+          }
+
+          .prefix {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba($white, 0.1);
+            font-size: 11px;
+            font-weight: 700;
+            flex-shrink: 0;
+          }
+
+          .status-icon {
+            margin-left: auto;
+            font-size: 18px;
+            @media (max-width: 480px) { font-size: 16px; }
+          }
+        }
+      }
+    }
+  }
+
+  .review-footer {
+    margin-top: $spacing-2xl;
+    padding-top: $spacing-xl;
+    border-top: 1px solid rgba($white, 0.1);
+    display: flex;
+    justify-content: center;
+
+    @media (max-width: 480px) {
+      button { width: 100%; }
+    }
+  }
+}

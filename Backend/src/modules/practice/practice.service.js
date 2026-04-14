@@ -62,10 +62,17 @@ export const getTestById = async (testId) => {
 };
 
 /**
+ * Get the latest result for a specific test (for review)
+ */
+export const getLatestResultForTest = async (userId, testId) => {
+  return PracticeResult.findOne({ userId, testId }).sort({ createdAt: -1 }).lean();
+};
+
+/**
  * Submit test results and sync with Dashboard Tracker
  */
 export const submitTestResult = async (userId, testId, resultData) => {
-  const { score, totalQuestions, timeTaken, date } = resultData;
+  const { score, totalQuestions, timeTaken, date, userAnswers } = resultData;
   const accuracy = totalQuestions > 0 ? parseFloat(((score / totalQuestions) * 100).toFixed(2)) : 0;
 
   // 1. Save the Test Result
@@ -76,6 +83,7 @@ export const submitTestResult = async (userId, testId, resultData) => {
     totalQuestions,
     accuracy,
     timeTaken,
+    userAnswers,
     date
   });
 

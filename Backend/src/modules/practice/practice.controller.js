@@ -24,3 +24,11 @@ export const submitResult = asyncHandler(async (req, res) => {
   const result = await practiceService.submitTestResult(req.user.id, req.params.id, req.body);
   return sendSuccess(res, 'Result submitted successfully', { result }, 201);
 });
+
+export const getLatestResult = asyncHandler(async (req, res) => {
+  const result = await practiceService.getLatestResultForTest(req.user.id, req.params.id);
+  if (!result) {
+    return sendError(res, 'No previous attempts found', 404);
+  }
+  return sendSuccess(res, 'Latest result fetched successfully', { result });
+});

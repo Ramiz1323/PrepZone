@@ -49,11 +49,24 @@ export const submitTestResult = createAsyncThunk(
   }
 );
 
+export const fetchLatestResult = createAsyncThunk(
+  'practice/fetchLatestResult',
+  async (testId, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/practice/${testId}/latest-result`);
+      return response.data.result;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || 'Failed to fetch latest result');
+    }
+  }
+);
+
 const practiceSlice = createSlice({
   name: 'practice',
   initialState: {
     tests: [],
     currentTest: null,
+    lastResult: null, // For review
     loading: false,
     error: null,
     submitLoading: false,
@@ -101,13 +114,21 @@ const practiceSlice = createSlice({
         state.submitLoading = false;
         state.error = action.payload;
       })
-      // Submit Result
-      .addCase(submitTestResult.pending, (state) => {
-        state.submitLoading = true;
-      })
       .addCase(submitTestResult.fulfilled, (state) => {
         state.submitLoading = false;
         state.success = true;
+      })
+      // Fetch Latest Result
+      .addCase(fetchLatestResult.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchLatestResult.fulfilled, (state, action) => {
+        state.loading = false;
+        state.lastResult = action.payload;
+      })
+      .addCase(fetchLatestResult.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   }
 });

@@ -50,6 +50,7 @@ const practiceResultSchema = new mongoose.Schema(
     totalQuestions: { type: Number, required: true },
     accuracy: { type: Number, required: true },
     timeTaken: { type: Number, required: true }, // in seconds or minutes
+    userAnswers: [{ type: Number }], 
     date: { type: String, required: true }, // YYYY-MM-DD
   },
   { timestamps: true }
