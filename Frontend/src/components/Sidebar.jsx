@@ -27,7 +27,10 @@ const Sidebar = ({ isOpen, setOpen }) => {
       <aside className={clsx('sidebar', isOpen && 'open')}>
         <div className="sidebar-header">
           <div className="logo">
-            <span className="logo-accent">Prep</span>Zone
+            <img src="/logo.png" alt="PrepZone Logo" className="logo-img" />
+            <span className="logo-text">
+              <span className="logo-accent">Prep</span>Zone
+            </span>
           </div>
         </div>
         <nav className="sidebar-nav">

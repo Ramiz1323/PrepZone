@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import DashboardLayout from './layouts/DashboardLayout';
 import PageLoader from './components/PageLoader';
+import ReloadPrompt from './components/ReloadPrompt';
 
 // Lazy load modules
 const Login = lazy(() => import('./modules/auth/Login'));
@@ -43,6 +44,7 @@ function App() {
 
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
+      <ReloadPrompt />
     </Suspense>
   );
 }
