@@ -183,7 +183,12 @@ const RankPredictor = () => {
                     </div>
                   </div>
                   <div className="college-footer">
-                    <span className="cutoff-hint">Predicted GMR Safe Range: {college.minCutoff} - {college.cutoff}</span>
+                    <div className="metadata-row">
+                      <span className="cutoff-hint">Predicted GMR Safe Range: {college.minCutoff} - {college.cutoff}</span>
+                      {college.jumpNeeded > 0 && (
+                        <span className="jump-hint">Needs ~{college.jumpNeeded.toLocaleString()} Jump</span>
+                      )}
+                    </div>
                     <div className="prob-bar">
                       <div className="fill" style={{ 
                         width: `${college.probability}%`, 
@@ -240,7 +245,12 @@ const RankPredictor = () => {
                     </div>
                   </div>
                   <div className="college-footer">
-                    <span className="cutoff-hint">GMR Range: {college.minCutoff} - {college.cutoff}</span>
+                    <div className="metadata-row">
+                      <span className="cutoff-hint">GMR Range: {college.minCutoff} - {college.cutoff}</span>
+                      {college.jumpNeeded > 0 && (
+                        <span className="jump-hint">Needs ~{college.jumpNeeded.toLocaleString()} Jump</span>
+                      )}
+                    </div>
                     <div className="prob-bar">
                       <div className="fill" style={{ 
                         width: `${college.probability}%`, 

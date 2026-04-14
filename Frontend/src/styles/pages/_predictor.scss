@@ -365,11 +365,27 @@
     }
 
     .college-footer {
-      .cutoff-hint {
-        display: block;
-        font-size: 0.8rem;
-        color: #64748b;
+      .metadata-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         margin-bottom: 0.5rem;
+        gap: 0.5rem;
+
+        .cutoff-hint {
+          font-size: 0.8rem;
+          color: #64748b;
+          margin-bottom: 0;
+        }
+
+        .jump-hint {
+          font-size: 0.75rem;
+          color: #f87171;
+          font-weight: 600;
+          background: rgba(239, 68, 68, 0.1);
+          padding: 0.1rem 0.4rem;
+          border-radius: 4px;
+        }
       }
       .prob-bar {
         height: 4px;

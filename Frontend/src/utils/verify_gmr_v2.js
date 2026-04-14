@@ -1,8 +1,14 @@
 /**
- * Verification Script for GMR Pro V2 Logic
+ * Verification Script for GMR Pro V2 Logic with Proximity
  */
 
 const TOTAL_CANDIDATES = 25000;
+
+const COLLEGES = [
+  { name: 'Jadavpur University (JU)', cutoff: 30, minCutoff: 1 },
+  { name: 'Techno Main Salt Lake', cutoff: 3500, minCutoff: 2500 },
+  { name: 'Techno India Hooghly', cutoff: 5500, minCutoff: 3000 }
+];
 
 const calculateWBJECAReadiness = (stats) => {
   const { avgAccuracy = 0, totalMCQs = 0, streak = 0, weakSubjects = [] } = stats;
@@ -18,18 +24,24 @@ const calculateWBJECAReadiness = (stats) => {
   const percentile = totalReadiness / 100;
   let predictedGMR = Math.round(TOTAL_CANDIDATES * Math.pow(1 - percentile, 2.2));
   
-  return { gmr: predictedGMR, readiness: totalReadiness };
+  const collegeMatches = COLLEGES.map(college => {
+    let probability = 0;
+    if (predictedGMR <= college.cutoff) {
+        probability = 50; // Just a dummy for sim
+    } else {
+      const distance = predictedGMR - college.cutoff;
+      const maxPossibleDistance = TOTAL_CANDIDATES - college.cutoff;
+      const proximityFactor = 1 - (distance / maxPossibleDistance);
+      probability = 2 + (Math.pow(proximityFactor, 2) * 23);
+    }
+    return { name: college.name, prob: probability.toFixed(1) + "%" };
+  });
+
+  return { gmr: predictedGMR, colleges: collegeMatches };
 };
 
-const profiles = [
-  { name: "Elite (98% Acc, 6k MCQs, 20 streak, 0 weak)", stats: { avgAccuracy: 98, totalMCQs: 6000, streak: 20, weakSubjects: [] } },
-  { name: "Strong (90% Acc, 3k MCQs, 15 streak, 0 weak)", stats: { avgAccuracy: 90, totalMCQs: 3000, streak: 15, weakSubjects: [] } },
-  { name: "Unbalanced (90% Acc, 3k MCQs, 15 streak, 3 weak)", stats: { avgAccuracy: 90, totalMCQs: 3000, streak: 15, weakSubjects: ["Math", "Eng", "Coding"] } },
-  { name: "Beginner (60% Acc, 500 MCQs, 2 streak, 5 weak)", stats: { avgAccuracy: 60, totalMCQs: 500, streak: 2, weakSubjects: ["A", "B", "C", "D", "E"] } }
-];
+const user = { name: "Current User", stats: { avgAccuracy: 60, totalMCQs: 257, streak: 0, weakSubjects: ["A", "B", "C"] } };
 
-console.log("--- GMR PRO V2 SIMULATION RESULTS ---");
-profiles.forEach(p => {
-  const res = calculateWBJECAReadiness(p.stats);
-  console.log(`${p.name} => Readiness: ${res.readiness}%, GMR: #${res.gmr}`);
-});
+const res = calculateWBJECAReadiness(user.stats);
+console.log(`User Rank: #${res.gmr}`);
+res.colleges.forEach(c => console.log(` - ${c.name}: Line Width ${c.prob}`));
