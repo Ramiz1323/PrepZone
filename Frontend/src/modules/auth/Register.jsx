@@ -31,7 +31,6 @@ const Register = () => {
       <BackgroundLayer />
       <GlassCard className="auth-card">
         <div className="auth-header">
-          <img src="/logo.png" alt="PrepZone Logo" className="auth-logo" />
           <h1>Join <span className="highlight">PrepZone</span></h1>
           <p>Start your data-driven preparation today</p>
         </div>

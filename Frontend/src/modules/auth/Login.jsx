@@ -30,7 +30,6 @@ const Login = () => {
       <BackgroundLayer />
       <GlassCard className="auth-card">
         <div className="auth-header">
-          <img src="/logo.png" alt="PrepZone Logo" className="auth-logo" />
           <h1>Welcome to <span className="highlight">PrepZone</span></h1>
           <p>Login to track your JECA preparation journey</p>
         </div>
