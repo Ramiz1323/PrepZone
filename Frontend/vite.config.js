@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+﻿import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
@@ -6,11 +6,13 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'prompt', // Changed to prompt for ReloadPrompt support
-      injectRegister: 'script', 
-      includeAssets: ['logo.png'],
+      registerType: 'prompt',
+      // SW is registered via `useRegisterSW` (see `src/components/ReloadPrompt.jsx`)
+      injectRegister: null,
+      includeAssets: ['logo.png', 'pwa-192.png', 'pwa-512.png', 'apple-touch-icon.png'],
       manifest: {
-        name: 'PrepZone — JECA Prep Tracker',
+        id: '/',
+        name: 'PrepZone - JECA Prep Tracker',
         short_name: 'PrepZone',
         description: 'JECA exam preparation tracker with analytics, mistake logging, and revision management.',
         theme_color: '#ef4444',
@@ -20,40 +22,34 @@ export default defineConfig({
         start_url: '/',
         icons: [
           {
-            src: 'logo.png',
+            src: 'pwa-192.png',
             sizes: '192x192',
-            type: 'image/png'
+            type: 'image/png',
           },
           {
-            src: 'logo.png',
-            sizes: '512x512',
-            type: 'image/png'
-          },
-          {
-            src: 'logo.png',
+            src: 'pwa-512.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'any'
           },
           {
-            src: 'logo.png',
+            src: 'pwa-512.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'maskable'
-          }
-        ]
+            purpose: 'any maskable',
+          },
+        ],
       },
       workbox: {
         cleanupOutdatedCaches: true,
         clientsClaim: true,
         skipWaiting: true,
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest}']
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest}'],
       },
       devOptions: {
-        enabled: true, // Enable SW in development
-        type: 'module'
-      }
-    })
+        enabled: true,
+        type: 'module',
+      },
+    }),
   ],
   server: {
     port: 5173,

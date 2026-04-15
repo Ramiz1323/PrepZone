@@ -1,0 +1,84 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.pwa-install-prompt {
+  padding: 0;
+  margin: 0;
+  width: 0;
+  height: 0;
+  z-index: 1000;
+
+  .pwa-toast {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    margin: $spacing-xl;
+    padding: $spacing-lg;
+    border: 1px solid $glass-border;
+    border-radius: $border-radius-md;
+    z-index: 1000;
+    text-align: left;
+    @include glass-panel;
+    box-shadow: $shadow-soft;
+    animation: slideInInstall 0.5s ease;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    max-width: 340px;
+
+    .pwa-message {
+      font-size: 14px;
+      color: $text-primary;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    .pwa-buttons {
+      display: flex;
+      gap: $spacing-sm;
+
+      .pwa-button {
+        flex: 1;
+        padding: $spacing-sm $spacing-md;
+        border-radius: $border-radius-sm;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: $transition-base;
+        border: none;
+
+        &.install {
+          background: $accent-primary;
+          color: $white;
+          &:hover {
+            background: $accent-primary-hover;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba($accent-primary, 0.4);
+          }
+        }
+
+        &.close {
+          background: rgba($white, 0.05);
+          color: $text-secondary;
+          border: 1px solid rgba($white, 0.1);
+          &:hover {
+            background: rgba($white, 0.1);
+            color: $text-primary;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes slideInInstall {
+  from {
+    transform: translateY(100%) scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+

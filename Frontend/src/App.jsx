@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import DashboardLayout from './layouts/DashboardLayout';
 import PageLoader from './components/PageLoader';
 import ReloadPrompt from './components/ReloadPrompt';
+import InstallPrompt from './components/InstallPrompt';
 
 // Lazy load modules
 const Login = lazy(() => import('./modules/auth/Login'));
@@ -45,6 +46,7 @@ function App() {
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
       <ReloadPrompt />
+      <InstallPrompt />
     </Suspense>
   );
 }
