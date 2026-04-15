@@ -3,6 +3,7 @@ import { FiPlus, FiPlay, FiBookOpen, FiClock, FiSearch, FiUploadCloud } from 're
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { fetchMyTests, importNewTest, resetPracticeState } from '../../store/slices/practiceSlice';
+import { fetchPlanner } from '../../store/slices/plannerSlice';
 import GlassCard from '../../components/GlassCard';
 import Button from '../../components/Button';
 import { SkeletonCard } from '../../components/Skeleton';
@@ -19,7 +20,12 @@ const Practice = () => {
 
   useEffect(() => {
     dispatch(fetchMyTests());
+    dispatch(fetchPlanner());
   }, [dispatch]);
+
+  const { data: plannerData } = useSelector((state) => state.planner);
+  const todayStr = new Date().toISOString().split('T')[0];
+  const todayPlan = plannerData?.plans?.find((p) => p.date === todayStr);
 
   useEffect(() => {
     if (success) {
@@ -52,6 +58,33 @@ const Practice = () => {
           <FiPlus /> Import Test
         </Button>
       </div>
+
+      {todayPlan && (
+        <GlassCard className="today-target-card">
+          <div className="card-badge">Today's Mission</div>
+          <div className="card-content">
+            <div className="main-info">
+              <div className="subject-row">
+                <span className="subject">{todayPlan.subject}</span>
+              </div>
+              <div className="topics" aria-label="Today's topics">
+                {todayPlan.topics?.slice(0, 4).map((topic) => (
+                  <span key={topic} className="topic-tag">{topic}</span>
+                ))}
+                {todayPlan.topics?.length > 4 && (
+                  <span className="topic-tag more">+{todayPlan.topics.length - 4}</span>
+                )}
+              </div>
+            </div>
+
+            <div className="target-stats" aria-label="Today's target">
+              <span className="label">Target</span>
+              <span className="value">{todayPlan.mcqTarget}</span>
+              <span className="unit">MCQs</span>
+            </div>
+          </div>
+        </GlassCard>
+      )}
 
       <div className="filters-bar">
         <div className="search-box">

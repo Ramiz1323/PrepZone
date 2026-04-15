@@ -43,6 +43,101 @@
     }
   }
 
+  // Mirror the Dashboard "Today's Mission" card so users can reference subject/topics while importing tests.
+  .today-target-card {
+    background: rgba($white, 0.03);
+    border: 1px solid rgba($white, 0.09);
+    padding: $spacing-md $spacing-lg;
+    overflow: hidden;
+
+    .card-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      background: rgba($accent-primary, 0.14);
+      border: 1px solid rgba($accent-primary, 0.25);
+      border-radius: $border-radius-pill;
+      font-size: 11px;
+      font-weight: 800;
+      color: $accent-primary;
+      text-transform: uppercase;
+      margin-bottom: $spacing-md;
+    }
+
+    .card-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: $spacing-xl;
+
+      @media (max-width: 640px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: $spacing-md;
+      }
+    }
+
+    .main-info {
+      .subject-row {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+      }
+
+      .subject {
+        font-size: 16px;
+        font-weight: 800;
+        color: $white;
+        line-height: 1.2;
+      }
+
+      .topics {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 8px;
+
+        .topic-tag {
+          font-size: 11px;
+          color: $text-secondary;
+          background: rgba($white, 0.05);
+          padding: 2px 8px;
+          border-radius: 4px;
+          border: 1px solid rgba($white, 0.06);
+
+          &.more {
+            color: $accent-primary;
+            background: rgba($accent-primary, 0.08);
+            border-color: rgba($accent-primary, 0.18);
+          }
+        }
+      }
+    }
+
+    .target-stats {
+      min-width: 140px;
+      display: flex;
+      align-items: baseline;
+      justify-content: flex-end;
+      gap: 6px;
+      padding-left: $spacing-lg;
+      border-left: 1px solid rgba($white, 0.08);
+
+      @media (max-width: 640px) {
+        width: 100%;
+        justify-content: flex-start;
+        padding-left: 0;
+        border-left: none;
+        border-top: 1px solid rgba($white, 0.08);
+        padding-top: $spacing-sm;
+        margin-top: $spacing-sm;
+      }
+
+      .label { font-size: 11px; color: $text-secondary; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; }
+      .value { font-size: 18px; font-weight: 900; color: $accent-primary; }
+      .unit { font-size: 11px; color: $text-secondary; font-weight: 700; }
+    }
+  }
+
   .tests-grid {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
