@@ -33,8 +33,6 @@ const collegeSchema = new mongoose.Schema({
   timestamps: true,
 });
 
-// Index for performance
-collegeSchema.index({ name: 1 });
 
 const College = mongoose.model('College', collegeSchema);
 
