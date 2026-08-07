@@ -1,1 +1,0 @@
-import{j as s,e}from"./index-D-uMC_EK.js";const p=({label:n,error:a,className:t,...i})=>s.jsxs("div",{className:e("input-group",t),children:[n&&s.jsx("label",{className:"input-label",children:n}),s.jsx("input",{className:e("glass-input",a&&"has-error"),...i}),a&&s.jsx("span",{className:"input-error",children:a})]});export{p as I};

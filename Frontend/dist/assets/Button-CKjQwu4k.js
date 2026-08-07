@@ -1,1 +1,0 @@
-import{j as a,e as l}from"./index-D-uMC_EK.js";const x=({children:e,variant:n="primary",isLoading:s,className:r,...t})=>a.jsx("button",{className:l("btn",`btn-${n}`,s&&"loading",r),disabled:s||t.disabled,...t,children:s?a.jsx("span",{className:"spinner"}):e});export{x as B};

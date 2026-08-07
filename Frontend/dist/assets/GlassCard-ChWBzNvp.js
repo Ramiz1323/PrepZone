@@ -1,1 +1,0 @@
-import{j as t,e as l}from"./index-D-uMC_EK.js";const x=({children:s,className:a,interactive:r=!1,onClick:e})=>t.jsx("div",{className:l("glass-card",{interactive:r},a),onClick:e,children:s});export{x as G};
