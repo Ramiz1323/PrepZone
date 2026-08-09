@@ -67,7 +67,7 @@ if (!self.define) {
     });
   };
 }
-define(['./workbox-5a5d9309'], (function (workbox) { 'use strict';
+define(['./workbox-92c947ee'], (function (workbox) { 'use strict';
 
   self.skipWaiting();
   workbox.clientsClaim();
@@ -79,11 +79,16 @@ define(['./workbox-5a5d9309'], (function (workbox) { 'use strict';
    */
   workbox.precacheAndRoute([{
     "url": "index.html",
-    "revision": "0.i6cl0iksmg4"
+    "revision": "0.b676g6h0iao"
   }], {});
   workbox.cleanupOutdatedCaches();
   workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("index.html"), {
     allowlist: [/^\/$/]
   }));
+  workbox.registerRoute(/\/api\/practice\/[a-f0-9]+\/submit/, new workbox.NetworkOnly({
+    plugins: [new workbox.BackgroundSyncPlugin("mcq-submit-queue", {
+      maxRetentionTime: 1440
+    })]
+  }), 'GET');
 
 }));
