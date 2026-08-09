@@ -10,6 +10,7 @@ const Topbar = ({ toggleSidebar }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
+  const [showMobileXP, setShowMobileXP] = React.useState(false);
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -58,6 +59,39 @@ const Topbar = ({ toggleSidebar }) => {
           <div className="xp-fill" style={{ width: `${progressPercent}%`, background: `linear-gradient(to right, ${rank.color}, #ffffff)` }}></div>
         </div>
       </div>
+
+      {/* Mobile XP Trigger Pill */}
+      <div className="mobile-xp-pill" onClick={() => setShowMobileXP(!showMobileXP)} role="button" tabIndex={0}>
+        <span className="lvl">Lvl {currentLevel}</span>
+        <div className="divider"></div>
+        <span className="streak">
+          <HiFire style={{ color: user?.streak?.current > 0 ? '#ff4500' : '#9ca3af' }} />
+          <span>{user?.streak?.current || 0}</span>
+        </span>
+      </div>
+
+      {/* Mobile XP Details Dropdown Panel */}
+      {showMobileXP && (
+        <div className="mobile-xp-dropdown">
+          <div className="dropdown-rank" style={{ color: rank.color }}>
+            {rank.name} Rank
+          </div>
+          <div className="dropdown-xp-score">{xpInLevel} / 1000 XP</div>
+          <div className="dropdown-xp-bar">
+            <div
+              className="dropdown-xp-fill"
+              style={{
+                width: `${progressPercent}%`,
+                background: `linear-gradient(to right, ${rank.color}, #ffffff)`,
+              }}
+            ></div>
+          </div>
+          <div className="dropdown-streak">
+            <HiFire style={{ color: user?.streak?.current > 0 ? '#ff4500' : '#9ca3af' }} />
+            <span>{user?.streak?.current || 0} Day Streak</span>
+          </div>
+        </div>
+      )}
       
       <div className="topbar-right">
         <button className="icon-btn notification-btn" aria-label="Notifications">

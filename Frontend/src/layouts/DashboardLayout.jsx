@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser } from '../store/slices/authSlice';
 import Sidebar from '../components/Sidebar';
 import Topbar from '../components/Topbar';
+import BottomNavbar from '../components/BottomNavbar';
 import BackgroundLayer from '../components/BackgroundLayer';
 import PageLoader from '../components/PageLoader';
 import '../styles/components/_layout.scss';
@@ -36,6 +37,7 @@ const DashboardLayout = () => {
             <Outlet />
           </div>
         </main>
+        <BottomNavbar onToggleSidebar={() => setSidebarOpen(true)} />
       </div>
     </>
   );

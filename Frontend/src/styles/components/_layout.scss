@@ -1,5 +1,6 @@
 @use '../variables' as *;
 @use '../mixins' as *;
+@use 'bottom-navbar';
 
 .layout-wrapper {
   display: flex;
@@ -43,6 +44,12 @@
     flex: 1;
     min-height: 0; // Prevent content from expanding parent flex height
     padding: $spacing-md;
+    padding-bottom: 96px; // Ensure bottom navbar does not overlap scrollable content
+    
+    @media (min-width: 768px) {
+      padding-bottom: $spacing-md;
+    }
+    
     @include lg {
       padding-left: $spacing-xl;
       padding-right: $spacing-xl;

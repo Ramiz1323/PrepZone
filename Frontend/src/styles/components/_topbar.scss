@@ -255,4 +255,129 @@
       box-shadow: 0 2px 8px rgba($accent-primary, 0.4);
     }
   }
+
+  // Mobile XP Pill styles
+  .mobile-xp-pill {
+    display: none; // Hidden on desktop
+    
+    @media (max-width: 1024px) {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      background: rgba($white, 0.03);
+      border: 1px solid rgba($white, 0.08);
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      color: $text-primary;
+      transition: all 0.2s ease;
+      user-select: none;
+      
+      &:hover {
+        background: rgba($white, 0.06);
+        border-color: rgba($accent-primary, 0.3);
+      }
+      
+      &:active {
+        transform: scale(0.95);
+      }
+      
+      .divider {
+        width: 1px;
+        height: 12px;
+        background: rgba($white, 0.15);
+      }
+      
+      .streak {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        color: $accent-secondary;
+        
+        svg {
+          font-size: 16px;
+          filter: drop-shadow(0 0 4px rgba($accent-secondary, 0.5));
+        }
+      }
+      
+      .lvl {
+        color: $accent-primary;
+      }
+    }
+  }
+
+  // Mobile XP Dropdown overlay card
+  .mobile-xp-dropdown {
+    position: absolute;
+    top: 75px; // slightly below header
+    left: 50%;
+    transform: translateX(-50%);
+    width: 280px;
+    padding: $spacing-md;
+    z-index: 102;
+    @include glass-panel;
+    background: rgba($bg-gradient-start, 0.95);
+    border: 1px solid rgba($accent-primary, 0.25);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba($accent-primary, 0.1);
+    animation: slideDown 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    
+    .dropdown-rank {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      text-align: center;
+    }
+    
+    .dropdown-xp-score {
+      font-size: 11px;
+      font-weight: 500;
+      color: $text-secondary;
+      margin-bottom: $spacing-sm;
+      text-align: center;
+    }
+    
+    .dropdown-xp-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba($white, 0.05);
+      border-radius: $border-radius-pill;
+      overflow: hidden;
+      margin-bottom: $spacing-md;
+      
+      .dropdown-xp-fill {
+        height: 100%;
+        border-radius: $border-radius-pill;
+        box-shadow: 0 0 8px rgba($accent-primary, 0.4);
+      }
+    }
+    
+    .dropdown-streak {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: $text-primary;
+      background: rgba($white, 0.03);
+      border: 1px solid rgba($white, 0.05);
+      padding: 6px 12px;
+      border-radius: 12px;
+      
+      svg {
+        font-size: 16px;
+        color: $accent-secondary;
+        filter: drop-shadow(0 0 4px rgba($accent-secondary, 0.5));
+      }
+    }
+  }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translate(-50%, -10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
 }

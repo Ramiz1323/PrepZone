@@ -1,0 +1,82 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.bottom-navbar {
+  display: flex;
+  position: fixed;
+  bottom: 16px;
+  left: 5%;
+  right: 5%;
+  width: 90%;
+  max-width: 480px;
+  margin: 0 auto;
+  z-index: 99;
+  
+  @media (min-width: 768px) {
+    display: none; // Hidden on tablet and desktop
+  }
+
+  &-container {
+    @include glass-panel;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    padding: $spacing-xs $spacing-sm;
+    background: rgba($bg-gradient-start, 0.7); // Dark tinted glassy bg
+    border: 1px solid rgba($accent-primary, 0.15); // Subtle red border
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 15px rgba($accent-primary, 0.05);
+    border-radius: 20px;
+    padding-bottom: calc(#{$spacing-xs} + env(safe-area-inset-bottom));
+  }
+
+  .bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    border: none;
+    color: $text-secondary;
+    padding: 8px 4px;
+    border-radius: $border-radius-md;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    flex: 1;
+
+    .bottom-nav-icon {
+      font-size: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .bottom-nav-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.2px;
+    }
+
+    &:hover {
+      color: $text-primary;
+    }
+
+    &.active {
+      color: $accent-primary;
+      background: rgba($accent-primary, 0.08);
+      border: 1px solid rgba($accent-primary, 0.15);
+      
+      .bottom-nav-icon {
+        transform: translateY(-2px);
+        filter: drop-shadow(0 0 5px rgba($accent-primary, 0.6));
+      }
+      
+      .bottom-nav-label {
+        font-weight: 700;
+      }
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+}
