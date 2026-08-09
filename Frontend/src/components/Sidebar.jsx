@@ -40,7 +40,7 @@ const Sidebar = ({ isOpen, setOpen }) => {
                 key={path}
                 to={path}
                 className={clsx('nav-item', isActive && 'active')}
-                onClick={() => setOpen(false)}
+                onClick={() => setOpen?.(false)}
               >
                 <Icon className="nav-icon" />
                 <span className="nav-label">{name}</span>
