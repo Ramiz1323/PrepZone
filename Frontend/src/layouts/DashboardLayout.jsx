@@ -5,6 +5,7 @@ import { fetchUser } from '../store/slices/authSlice';
 import Sidebar from '../components/Sidebar';
 import Topbar from '../components/Topbar';
 import BottomNavbar from '../components/BottomNavbar';
+import BottomSheet from '../components/BottomSheet';
 import BackgroundLayer from '../components/BackgroundLayer';
 import PageLoader from '../components/PageLoader';
 import '../styles/components/_layout.scss';
@@ -13,6 +14,7 @@ const DashboardLayout = () => {
   const dispatch = useDispatch();
   const { user, isAuthenticated, appLoading } = useSelector((state) => state.auth);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchUser());
@@ -37,7 +39,8 @@ const DashboardLayout = () => {
             <Outlet />
           </div>
         </main>
-        <BottomNavbar onToggleSidebar={() => setSidebarOpen(true)} />
+        <BottomNavbar onToggleSidebar={() => setBottomSheetOpen(true)} />
+        <BottomSheet isOpen={bottomSheetOpen} onClose={() => setBottomSheetOpen(false)} />
       </div>
     </>
   );

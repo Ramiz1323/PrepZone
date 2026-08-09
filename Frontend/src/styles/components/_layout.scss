@@ -1,6 +1,7 @@
 @use '../variables' as *;
 @use '../mixins' as *;
 @use 'bottom-navbar';
+@use 'bottom-sheet';
 
 .layout-wrapper {
   display: flex;
