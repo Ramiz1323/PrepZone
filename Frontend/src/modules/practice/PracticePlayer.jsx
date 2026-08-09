@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { FiClock, FiCheckCircle, FiXCircle, FiArrowRight, FiAward, FiHome, FiBookOpen, FiCode } from 'react-icons/fi';
+import { FiClock, FiCheckCircle, FiArrowRight, FiAward, FiHome, FiBookOpen, FiCode } from 'react-icons/fi';
 import { fetchTestDetails, submitTestResult, resetPracticeState } from '../../store/slices/practiceSlice';
 import GlassCard from '../../components/GlassCard';
 import Button from '../../components/Button';
@@ -17,7 +17,7 @@ const PracticePlayer = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { currentTest, loading, submitLoading, success } = useSelector(state => state.practice);
+  const { currentTest, loading, submitLoading } = useSelector(state => state.practice);
   const isOnline = useOnlineStatus();
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -25,7 +25,6 @@ const PracticePlayer = () => {
   const [answers, setAnswers] = useState([]); // Stores user choices
   const [timeLeft, setTimeLeft] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
-  const [isExamMode, setIsExamMode] = useState(false); // If true, shows answers only at the end
 
   useEffect(() => {
     dispatch(fetchTestDetails(id));

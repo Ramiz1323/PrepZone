@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiMenu, FiBell, FiLogOut, FiUploadCloud, FiWifiOff } from 'react-icons/fi';
+import { FiBell, FiLogOut, FiUploadCloud, FiWifiOff } from 'react-icons/fi';
 import { HiFire } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../store/slices/authSlice';
@@ -8,7 +8,7 @@ import { useOnlineStatus } from '../hooks/useOnlineStatus';
 import { db } from '../services/db';
 import '../styles/components/_topbar.scss';
 
-const Topbar = ({ toggleSidebar }) => {
+const Topbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
