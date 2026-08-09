@@ -11,7 +11,7 @@
   height: 80px;
 
   @media (max-width: 600px) {
-    padding: 0 $spacing-md;
+    padding: 0 10px;
     height: 70px;
   }
 
@@ -21,7 +21,7 @@
     gap: $spacing-lg;
 
     @media (max-width: 600px) {
-      gap: $spacing-sm;
+      gap: 6px;
     }
 
     .menu-btn {
@@ -45,8 +45,12 @@
     .page-title {
       h2 {
         margin: 0;
-        font-size: 20px;
+        font-size: 18px;
         font-weight: 500;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 4px;
         
         .welcome-text {
           @media (max-width: 600px) {
@@ -68,7 +72,7 @@
     gap: $spacing-xl;
 
     @media (max-width: 600px) {
-      gap: $spacing-md;
+      gap: 8px;
     }
 
     .icon-btn {
@@ -263,8 +267,8 @@
     @media (max-width: 1024px) {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 6px 12px;
+      gap: 6px;
+      padding: 6px 10px;
       background: rgba($white, 0.03);
       border: 1px solid rgba($white, 0.08);
       border-radius: 20px;
@@ -274,6 +278,13 @@
       color: $text-primary;
       transition: all 0.2s ease;
       user-select: none;
+      white-space: nowrap;
+
+      @media (max-width: 600px) {
+        padding: 4px 8px;
+        font-size: 12px;
+        gap: 4px;
+      }
       
       &:hover {
         background: rgba($white, 0.06);
@@ -295,6 +306,7 @@
         align-items: center;
         gap: 4px;
         color: $accent-secondary;
+        white-space: nowrap;
         
         svg {
           font-size: 16px;
@@ -304,6 +316,7 @@
       
       .lvl {
         color: $accent-primary;
+        white-space: nowrap;
       }
     }
   }
