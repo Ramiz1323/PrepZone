@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser } from '../store/slices/authSlice';
@@ -50,7 +50,9 @@ const DashboardLayout = () => {
         <main className="main-content">
           <Topbar />
           <div className="page-container">
-            <Outlet />
+            <Suspense fallback={<PageLoader />}>
+              <Outlet />
+            </Suspense>
           </div>
         </main>
         <BottomNavbar onToggleSidebar={() => setBottomSheetOpen(true)} />
