@@ -110,18 +110,6 @@ const Topbar = ({ toggleSidebar }) => {
       )}
       
       <div className="topbar-right">
-        {pendingSyncs > 0 && (
-          <div className="sync-badge-container" title={`${pendingSyncs} test attempts waiting to sync`}>
-            <FiUploadCloud className={`sync-icon ${isOnline ? 'online' : 'offline'}`} />
-            <span className="sync-count">{pendingSyncs}</span>
-          </div>
-        )}
-        {!isOnline && (
-          <div className="offline-badge" title="App is currently offline">
-            <FiWifiOff /> Offline
-          </div>
-        )}
-
         <button className="icon-btn notification-btn" aria-label="Notifications">
           <FiBell />
           <span className="badge"></span>
@@ -132,9 +120,24 @@ const Topbar = ({ toggleSidebar }) => {
             {user?.name?.charAt(0).toUpperCase() || 'U'}
           </div>
           <button className="logout-btn" onClick={handleLogout} aria-label="Logout">
-            <FiLogOut />
+             <FiLogOut />
           </button>
         </div>
+      </div>
+
+      {/* Floating Network & Sync Status indicators */}
+      <div className="topbar-floating-status">
+        {!isOnline && (
+          <div className="floating-badge offline" title="App is currently offline">
+            <FiWifiOff /> Offline
+          </div>
+        )}
+        {pendingSyncs > 0 && (
+          <div className="floating-badge sync-pending" title={`${pendingSyncs} test attempts waiting to sync`}>
+            <FiUploadCloud className={`sync-icon ${isOnline ? 'online' : 'offline'}`} />
+            <span>{pendingSyncs} Sync Pending</span>
+          </div>
+        )}
       </div>
     </header>
   );

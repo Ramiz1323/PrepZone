@@ -395,67 +395,74 @@
   to { opacity: 1; transform: translate(-50%, 0); }
 }
 
-.topbar {
-  .sync-badge-container {
-    position: relative;
+.topbar-floating-status {
+  position: fixed;
+  top: 90px;
+  right: 16px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  pointer-events: none;
+
+  @media (max-width: 600px) {
+    top: 80px;
+    right: 10px;
+  }
+
+  .floating-badge {
+    pointer-events: auto;
+    @include glass-panel;
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: rgba($white, 0.03);
-    border: 1px solid rgba($white, 0.05);
-    color: $accent-secondary;
-    cursor: help;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba($white, 0.02);
+    animation: slideInRight 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     transition: all 0.3s ease;
 
     &:hover {
-      background: rgba($white, 0.08);
-      transform: translateY(-2px);
+      transform: translateY(-2px) scale(1.05);
     }
 
-    .sync-icon {
-      font-size: 18px;
+    &.offline {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #f87171;
       
-      &.online {
-        color: $accent-secondary;
-        animation: pulse 2s infinite alternate;
-      }
-      &.offline {
-        color: #9ca3af;
+      svg {
+        animation: pulse 1.5s infinite alternate;
       }
     }
 
-    .sync-count {
-      position: absolute;
-      top: -3px;
-      right: -3px;
-      background: $accent-primary;
-      color: white;
-      font-size: 9px;
-      font-weight: 800;
-      padding: 2px 6px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba($accent-primary, 0.6);
+    &.sync-pending {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fbbf24;
+
+      .sync-icon {
+        font-size: 16px;
+        &.online {
+          animation: spin 2s linear infinite;
+        }
+      }
     }
   }
+}
 
-  .offline-badge {
-    background: rgba(239, 68, 68, 0.15);
-    border: 1px solid rgba(239, 68, 68, 0.3);
-    color: #f87171;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 20px;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 @keyframes pulse {
