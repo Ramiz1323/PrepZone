@@ -37,9 +37,6 @@ const Topbar = ({ toggleSidebar }) => {
   return (
     <header className="topbar">
       <div className="topbar-left">
-        <button className="menu-btn" onClick={toggleSidebar} aria-label="Toggle Menu">
-          <FiMenu />
-        </button>
         <div className="page-title">
           <h2><span className="welcome-text">Welcome back, </span><span className="highlight">{user?.name?.split(' ')[0] || 'User'}</span> 👋</h2>
         </div>

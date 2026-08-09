@@ -13,7 +13,6 @@ import '../styles/components/_layout.scss';
 const DashboardLayout = () => {
   const dispatch = useDispatch();
   const { user, isAuthenticated, appLoading } = useSelector((state) => state.auth);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
 
   useEffect(() => {
@@ -32,9 +31,9 @@ const DashboardLayout = () => {
     <>
       <BackgroundLayer />
       <div className="layout-wrapper">
-        <Sidebar isOpen={sidebarOpen} setOpen={setSidebarOpen} />
+        <Sidebar />
         <main className="main-content">
-          <Topbar toggleSidebar={() => setSidebarOpen(true)} />
+          <Topbar />
           <div className="page-container">
             <Outlet />
           </div>
