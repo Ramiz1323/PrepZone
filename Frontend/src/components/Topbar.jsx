@@ -1,9 +1,11 @@
 import React from 'react';
-import { FiMenu, FiBell, FiLogOut } from 'react-icons/fi';
+import { FiMenu, FiBell, FiLogOut, FiUploadCloud, FiWifiOff } from 'react-icons/fi';
 import { HiFire } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../store/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
+import { useOnlineStatus } from '../hooks/useOnlineStatus';
+import { db } from '../services/db';
 import '../styles/components/_topbar.scss';
 
 const Topbar = ({ toggleSidebar }) => {
@@ -11,6 +13,23 @@ const Topbar = ({ toggleSidebar }) => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
   const [showMobileXP, setShowMobileXP] = React.useState(false);
+  const isOnline = useOnlineStatus();
+  const [pendingSyncs, setPendingSyncs] = React.useState(0);
+
+  React.useEffect(() => {
+    const updateCount = async () => {
+      try {
+        const count = await db.syncOutbox.count();
+        setPendingSyncs(count);
+      } catch (err) {
+        console.error('Failed to get outbox count:', err);
+      }
+    };
+
+    updateCount();
+    const interval = setInterval(updateCount, 4000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -91,6 +110,18 @@ const Topbar = ({ toggleSidebar }) => {
       )}
       
       <div className="topbar-right">
+        {pendingSyncs > 0 && (
+          <div className="sync-badge-container" title={`${pendingSyncs} test attempts waiting to sync`}>
+            <FiUploadCloud className={`sync-icon ${isOnline ? 'online' : 'offline'}`} />
+            <span className="sync-count">{pendingSyncs}</span>
+          </div>
+        )}
+        {!isOnline && (
+          <div className="offline-badge" title="App is currently offline">
+            <FiWifiOff /> Offline
+          </div>
+        )}
+
         <button className="icon-btn notification-btn" aria-label="Notifications">
           <FiBell />
           <span className="badge"></span>

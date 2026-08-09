@@ -8,6 +8,9 @@ import GlassCard from '../../components/GlassCard';
 import Button from '../../components/Button';
 import { SkeletonCard } from '../../components/Skeleton';
 import ImportModal from './components/ImportModal';
+import { db } from '../../services/db';
+import { syncService } from '../../services/syncService';
+import { useOnlineStatus } from '../../hooks/useOnlineStatus';
 import '../../styles/pages/_practice.scss';
 
 const Practice = () => {
@@ -17,11 +20,46 @@ const Practice = () => {
   
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [pendingSyncs, setPendingSyncs] = useState(0);
+  const [syncing, setSyncing] = useState(false);
+  const isOnline = useOnlineStatus();
+
+  const updateSyncCount = async () => {
+    try {
+      const count = await db.syncOutbox.count();
+      setPendingSyncs(count);
+    } catch (err) {
+      console.error('Failed to update sync count:', err);
+    }
+  };
 
   useEffect(() => {
     dispatch(fetchMyTests());
     dispatch(fetchPlanner());
+    updateSyncCount();
   }, [dispatch]);
+
+  useEffect(() => {
+    // Keep count updated in real time
+    const interval = setInterval(updateSyncCount, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleManualSync = async () => {
+    if (syncing || !isOnline || pendingSyncs === 0) return;
+    setSyncing(true);
+    const res = await syncService.syncPendingResults();
+    if (res.status === 'finished') {
+      alert(`Successfully synchronized ${res.successCount} test results with the cloud!`);
+      dispatch(fetchMyTests());
+    } else if (res.status === 'offline') {
+      alert('You are offline. Please reconnect to internet to sync.');
+    } else {
+      alert('Failed to sync. Please try again later.');
+    }
+    setSyncing(false);
+    updateSyncCount();
+  };
 
   const { data: plannerData } = useSelector((state) => state.planner);
   const todayStr = new Date().toISOString().split('T')[0];
@@ -58,6 +96,38 @@ const Practice = () => {
           <FiPlus /> Import Test
         </Button>
       </div>
+
+      {pendingSyncs > 0 && (
+        <GlassCard className="sync-banner" style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          background: 'rgba(245, 158, 11, 0.1)',
+          border: '1px solid rgba(245, 158, 11, 0.25)',
+          padding: '16px',
+          borderRadius: '16px',
+          marginBottom: '20px'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <FiUploadCloud size={24} style={{ color: '#f59e0b', animation: syncing ? 'pulse 2s infinite' : 'none' }} />
+            <div>
+              <h4 style={{ margin: 0, color: '#fbbf24', fontSize: '15px', fontWeight: '600' }}>Sync Pending Results</h4>
+              <p style={{ margin: 0, color: '#d1d5db', fontSize: '13px' }}>
+                You have {pendingSyncs} test attempt{pendingSyncs > 1 ? 's' : ''} saved locally.
+              </p>
+            </div>
+          </div>
+          <Button 
+            variant="primary" 
+            onClick={handleManualSync}
+            disabled={syncing || !isOnline}
+            isLoading={syncing}
+            style={{ background: '#f59e0b', borderColor: '#f59e0b', color: '#000', padding: '8px 16px', fontSize: '14px' }}
+          >
+            {isOnline ? 'Sync Now' : 'Connect to Sync'}
+          </Button>
+        </GlassCard>
+      )}
 
       {todayPlan && (
         <GlassCard className="today-target-card">
