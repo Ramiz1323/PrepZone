@@ -1,0 +1,13 @@
+diff --git a/node_modules/workbox-build/build/lib/module-registry.js b/node_modules/workbox-build/build/lib/module-registry.js
+index 9a34dd9..eb61571 100644
+--- a/node_modules/workbox-build/build/lib/module-registry.js
++++ b/node_modules/workbox-build/build/lib/module-registry.js
+@@ -41,7 +41,7 @@ class ModuleRegistry {
+             const pkgJsonPath = require.resolve(`${pkg}/package.json`);
+             const pkgRoot = upath_1.default.dirname(pkgJsonPath);
+             const importStatement = (0, common_tags_1.oneLine) `import {${moduleName} as ${localName}} from
+-        '${pkgRoot}/${moduleName}.mjs';`;
++        "${pkgRoot}/${moduleName}.mjs";`;
+             workboxModuleImports.push(importStatement);
+         }
+         return workboxModuleImports;

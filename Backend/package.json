@@ -1,6 +1,6 @@
 {
   "name": "prepzone-backend",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "PrepZone - JECA Preparation Tracker Backend API",
   "main": "server.js",
   "type": "module",
