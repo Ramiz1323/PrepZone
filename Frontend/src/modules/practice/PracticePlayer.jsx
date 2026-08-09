@@ -9,6 +9,8 @@ import PageLoader from '../../components/PageLoader';
 import confetti from 'canvas-confetti';
 import { getLocalDateString } from '../../utils/dateUtils';
 import { highlightCode } from '../../utils/highlighter';
+import { db } from '../../services/db';
+import { useOnlineStatus } from '../../hooks/useOnlineStatus';
 import '../../styles/pages/_practice.scss';
 
 const PracticePlayer = () => {
@@ -16,6 +18,7 @@ const PracticePlayer = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { currentTest, loading, submitLoading, success } = useSelector(state => state.practice);
+  const isOnline = useOnlineStatus();
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -28,25 +31,67 @@ const PracticePlayer = () => {
     dispatch(fetchTestDetails(id));
   }, [id, dispatch]);
 
+  const saveProgress = useCallback((index, currentAnswers, secondsLeft) => {
+    if (!id || !currentTest) return;
+    db.activeTests.put({
+      testId: id,
+      currentIndex: index,
+      answers: currentAnswers,
+      timeLeft: secondsLeft
+    }).catch(err => console.error('Failed to save progress to IndexedDB:', err));
+  }, [id, currentTest]);
+
+  // Load progress if exists
   useEffect(() => {
-    if (currentTest && currentTest.isTimed) {
-      setTimeLeft(currentTest.timeLimit * 60);
+    if (currentTest) {
+      db.activeTests.get(id).then(savedProgress => {
+        if (savedProgress) {
+          setCurrentIndex(savedProgress.currentIndex);
+          setAnswers(savedProgress.answers);
+          setSelectedOption(savedProgress.answers[savedProgress.currentIndex] ?? null);
+          if (currentTest.isTimed) {
+            setTimeLeft(savedProgress.timeLeft);
+          }
+        } else {
+          setAnswers(new Array(currentTest.questions.length).fill(null));
+          if (currentTest.isTimed) {
+            setTimeLeft(currentTest.timeLimit * 60);
+          }
+        }
+      }).catch(err => {
+        console.error('Failed to load saved progress:', err);
+        setAnswers(new Array(currentTest.questions.length).fill(null));
+        if (currentTest.isTimed) {
+          setTimeLeft(currentTest.timeLimit * 60);
+        }
+      });
     }
-  }, [currentTest]);
+  }, [currentTest, id]);
 
   // Timer logic
   useEffect(() => {
     if (timeLeft > 0 && !isFinished) {
-      const timer = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
+      const timer = setInterval(() => {
+        setTimeLeft(prev => {
+          const nextTime = prev - 1;
+          if (nextTime % 5 === 0) {
+            saveProgress(currentIndex, answers, nextTime);
+          }
+          return nextTime;
+        });
+      }, 1000);
       return () => clearInterval(timer);
     } else if (timeLeft === 0 && currentTest?.isTimed && !isFinished) {
       handleFinish();
     }
-  }, [timeLeft, isFinished, currentTest]);
+  }, [timeLeft, isFinished, currentTest, currentIndex, answers, saveProgress]);
 
-  const handleFinish = useCallback((finalAnswers = answers) => {
+  const handleFinish = useCallback(async (finalAnswers = answers) => {
     if (isFinished) return;
     setIsFinished(true);
+
+    // Delete local active progress since the test is finished
+    await db.activeTests.delete(id).catch(err => console.error('Failed to delete progress:', err));
 
     // Calculate score using passed answers to avoid stale state
     const score = finalAnswers.reduce((acc, ans, idx) => {
@@ -61,7 +106,20 @@ const PracticePlayer = () => {
       date: getLocalDateString()
     };
 
-    dispatch(submitTestResult({ testId: id, resultData }));
+    if (navigator.onLine) {
+      dispatch(submitTestResult({ testId: id, resultData }));
+    } else {
+      try {
+        await db.syncOutbox.add({
+          testId: id,
+          resultData,
+          timestamp: Date.now()
+        });
+        console.log('Test completed offline, results queued in syncOutbox.');
+      } catch (err) {
+        console.error('Failed to save test result offline:', err);
+      }
+    }
 
     const accuracy = score / currentTest.questions.length;
     console.log('Result Calculated:', { score, total: currentTest.questions.length, accuracy });
@@ -100,6 +158,14 @@ const PracticePlayer = () => {
     }
   }, [id, answers, currentTest, timeLeft, isFinished, dispatch]);
 
+  const handleSelectOption = (idx) => {
+    setSelectedOption(idx);
+    const newAnswers = [...answers];
+    newAnswers[currentIndex] = idx;
+    setAnswers(newAnswers);
+    saveProgress(currentIndex, newAnswers, timeLeft);
+  };
+
   const handleNext = () => {
     if (selectedOption === null) return;
 
@@ -108,8 +174,10 @@ const PracticePlayer = () => {
     setAnswers(newAnswers);
 
     if (currentIndex < currentTest.questions.length - 1) {
-      setCurrentIndex(prev => prev + 1);
-      setSelectedOption(answers[currentIndex + 1] ?? null);
+      const nextIdx = currentIndex + 1;
+      setCurrentIndex(nextIdx);
+      setSelectedOption(answers[nextIdx] ?? null);
+      saveProgress(nextIdx, newAnswers, timeLeft);
     } else {
       handleFinish(newAnswers);
     }
@@ -136,6 +204,21 @@ const PracticePlayer = () => {
             <FiAward size={64} color="#fbbf24" />
           </div>
           <h2>Test Completed!</h2>
+          {!isOnline && (
+            <div className="offline-notice" style={{
+              background: 'rgba(239, 68, 68, 0.1)',
+              border: '1px solid rgba(239, 68, 68, 0.2)',
+              color: '#f87171',
+              padding: '12px',
+              borderRadius: '8px',
+              margin: '12px auto',
+              fontSize: '14px',
+              textAlign: 'center',
+              maxWidth: '400px'
+            }}>
+              ⚠️ You are offline. Your score of <strong>{score}/{currentTest.questions.length}</strong> has been saved locally and will sync when you reconnect.
+            </div>
+          )}
           <div className="stats-row">
             <div className="stat">
               <label>Score</label>
@@ -215,7 +298,7 @@ const PracticePlayer = () => {
               <div
                 key={idx}
                 className={`option-item ${selectedOption === idx ? 'selected' : ''}`}
-                onClick={() => setSelectedOption(idx)}
+                onClick={() => handleSelectOption(idx)}
               >
                 <div className="prefix">{String.fromCharCode(65 + idx)}</div>
                 <div className="text">{opt}</div>
@@ -230,8 +313,10 @@ const PracticePlayer = () => {
           variant="secondary"
           disabled={currentIndex === 0}
           onClick={() => {
-            setCurrentIndex(prev => prev - 1);
-            setSelectedOption(answers[currentIndex - 1]);
+            const prevIndex = currentIndex - 1;
+            setCurrentIndex(prevIndex);
+            setSelectedOption(answers[prevIndex]);
+            saveProgress(prevIndex, answers, timeLeft);
           }}
         >
           Previous

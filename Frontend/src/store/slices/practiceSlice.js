@@ -1,13 +1,28 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../../services/api';
+import { db } from '../../services/db';
 
 export const fetchMyTests = createAsyncThunk(
   'practice/fetchMyTests',
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get('/practice/my-tests');
-      return response.data.tests;
+      const tests = response.data.tests;
+      // Cache all fetched tests locally
+      if (Array.isArray(tests)) {
+        await db.tests.bulkPut(tests);
+      }
+      return tests;
     } catch (err) {
+      try {
+        const cachedTests = await db.tests.toArray();
+        if (cachedTests && cachedTests.length > 0) {
+          console.log('Using local cached tests (offline)');
+          return cachedTests;
+        }
+      } catch (dbErr) {
+        console.error('Failed to read from IndexedDB:', dbErr);
+      }
       return rejectWithValue(err.response?.data?.message || 'Failed to load tests');
     }
   }
@@ -18,8 +33,22 @@ export const fetchTestDetails = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const response = await api.get(`/practice/${id}`);
-      return response.data.test;
+      const test = response.data.test;
+      // Cache this test details locally
+      if (test) {
+        await db.tests.put(test);
+      }
+      return test;
     } catch (err) {
+      try {
+        const cachedTest = await db.tests.get(id);
+        if (cachedTest) {
+          console.log('Using cached test details (offline)');
+          return cachedTest;
+        }
+      } catch (dbErr) {
+        console.error('Failed to read test details from IndexedDB:', dbErr);
+      }
       return rejectWithValue(err.response?.data?.message || 'Failed to load test details');
     }
   }
@@ -56,6 +85,24 @@ export const fetchLatestResult = createAsyncThunk(
       const response = await api.get(`/practice/${testId}/latest-result`);
       return response.data.result;
     } catch (err) {
+      try {
+        const outboxItems = await db.syncOutbox
+          .where('testId')
+          .equals(testId)
+          .toArray();
+        if (outboxItems && outboxItems.length > 0) {
+          outboxItems.sort((a, b) => b.timestamp - a.timestamp);
+          const latestOutbox = outboxItems[0];
+          const accuracy = Math.round((latestOutbox.resultData.score / latestOutbox.resultData.totalQuestions) * 100);
+          return {
+            ...latestOutbox.resultData,
+            accuracy,
+            isOfflinePending: true
+          };
+        }
+      } catch (dbErr) {
+        console.error('Failed to query syncOutbox in fetchLatestResult:', dbErr);
+      }
       return rejectWithValue(err.response?.data?.message || 'Failed to fetch latest result');
     }
   }
