@@ -51,7 +51,7 @@ const Sidebar = ({ isOpen, setOpen }) => {
         </nav>
 
         <div className="sidebar-footer">
-          <p className="footer-text">JECA Prep v1.2.0</p>
+          <p className="footer-text">JECA Prep v1.2.1</p>
         </div>
       </aside>
     </>
