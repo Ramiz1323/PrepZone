@@ -8,16 +8,31 @@ import BottomNavbar from '../components/BottomNavbar';
 import BottomSheet from '../components/BottomSheet';
 import BackgroundLayer from '../components/BackgroundLayer';
 import PageLoader from '../components/PageLoader';
+import { useOnlineStatus } from '../hooks/useOnlineStatus';
+import { syncService } from '../services/syncService';
 import '../styles/components/_layout.scss';
 
 const DashboardLayout = () => {
   const dispatch = useDispatch();
   const { user, isAuthenticated, appLoading } = useSelector((state) => state.auth);
   const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
+  const isOnline = useOnlineStatus();
 
   useEffect(() => {
     dispatch(fetchUser());
   }, [dispatch]);
+
+  // Auto-sync when coming online
+  useEffect(() => {
+    if (isOnline) {
+      syncService.syncPendingResults().then((res) => {
+        if (res.status === 'finished' && res.successCount > 0) {
+          // Re-fetch user to update streaks, level, and XP progressions
+          dispatch(fetchUser());
+        }
+      });
+    }
+  }, [isOnline, dispatch]);
 
   if (appLoading) {
     return <PageLoader />;

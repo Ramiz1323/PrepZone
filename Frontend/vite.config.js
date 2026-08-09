@@ -1,4 +1,4 @@
-﻿import { defineConfig } from 'vite';
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
@@ -44,6 +44,20 @@ export default defineConfig({
         clientsClaim: true,
         skipWaiting: true,
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest}'],
+        runtimeCaching: [
+          {
+            urlPattern: /\/api\/practice\/[a-f0-9]+\/submit/,
+            handler: 'NetworkOnly',
+            options: {
+              backgroundSync: {
+                name: 'mcq-submit-queue',
+                options: {
+                  maxRetentionTime: 24 * 60 // retry for up to 24 hours
+                }
+              }
+            }
+          }
+        ]
       },
       devOptions: {
         enabled: true,
