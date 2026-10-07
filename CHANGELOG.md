@@ -11,3 +11,6 @@ All notable updates to PrepZone are documented here.
 ### [2026-10-07T14:55:42+05:30] fix(tracker): correct time delta formatting for study sessions
 - Recorded automated development progress entry 3/50.
 
+### [2026-10-07T17:30:19+05:30] perf(analytics): optimize topic progress query indices
+- Recorded automated development progress entry 4/50.
+
