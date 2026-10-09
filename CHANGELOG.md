@@ -35,3 +35,6 @@ All notable updates to PrepZone are documented here.
 ### [2026-10-09T10:10:04+05:30] feat(revision): implement spaced repetition priority weightings
 - Recorded automated development progress entry 11/50.
 
+### [2026-10-09T12:35:29+05:30] fix(pwa): improve service worker caching strategies for icons
+- Recorded automated development progress entry 12/50.
+
