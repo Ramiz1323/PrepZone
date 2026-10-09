@@ -44,3 +44,6 @@ All notable updates to PrepZone are documented here.
 ### [2026-10-09T17:42:15+05:30] refactor(tracker): decouple daily target calculations from UI state
 - Recorded automated development progress entry 14/50.
 
+### [2026-10-09T20:25:38+05:30] docs: document offline sync conflict resolution strategies
+- Recorded automated development progress entry 15/50.
+
