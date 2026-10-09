@@ -38,3 +38,6 @@ All notable updates to PrepZone are documented here.
 ### [2026-10-09T12:35:29+05:30] fix(pwa): improve service worker caching strategies for icons
 - Recorded automated development progress entry 12/50.
 
+### [2026-10-09T15:05:50+05:30] perf(database): add compound index on user id and subject
+- Recorded automated development progress entry 13/50.
+
