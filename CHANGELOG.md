@@ -47,3 +47,6 @@ All notable updates to PrepZone are documented here.
 ### [2026-10-09T20:25:38+05:30] docs: document offline sync conflict resolution strategies
 - Recorded automated development progress entry 15/50.
 
+### [2026-10-10T09:55:22+05:30] feat(analytics): add subject mastery score progression curve
+- Recorded automated development progress entry 16/50.
+
