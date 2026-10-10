@@ -50,3 +50,6 @@ All notable updates to PrepZone are documented here.
 ### [2026-10-10T09:55:22+05:30] feat(analytics): add subject mastery score progression curve
 - Recorded automated development progress entry 16/50.
 
+### [2026-10-10T12:20:47+05:30] fix(sidebar): prevent duplicate active states during subroute navigation
+- Recorded automated development progress entry 17/50.
+
