@@ -89,3 +89,6 @@ All notable updates to PrepZone are documented here.
 ### [2026-10-12T17:00:33+05:30] style(cards): add micro-animations for card hover states
 - Recorded automated development progress entry 29/50.
 
+### [2026-10-12T19:35:56+05:30] docs: update deployment guidelines for vercel and atlas
+- Recorded automated development progress entry 30/50.
+
