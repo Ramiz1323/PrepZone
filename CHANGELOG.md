@@ -80,3 +80,6 @@ All notable updates to PrepZone are documented here.
 ### [2026-10-12T09:35:19+05:30] feat(mistakes): add quick-review toggle for flagged questions
 - Recorded automated development progress entry 26/50.
 
+### [2026-10-12T12:05:44+05:30] fix(planner): ensure target study hours reset at midnight UTC
+- Recorded automated development progress entry 27/50.
+
