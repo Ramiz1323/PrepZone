@@ -95,3 +95,6 @@ All notable updates to PrepZone are documented here.
 ### [2026-10-13T10:05:22+05:30] feat(practice): record time spent per question in test sessions
 - Recorded automated development progress entry 31/50.
 
+### [2026-10-13T12:30:48+05:30] fix(auth): clear local tokens on 401 unauthenticated responses
+- Recorded automated development progress entry 32/50.
+
