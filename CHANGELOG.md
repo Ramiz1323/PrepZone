@@ -98,3 +98,6 @@ All notable updates to PrepZone are documented here.
 ### [2026-10-13T12:30:48+05:30] fix(auth): clear local tokens on 401 unauthenticated responses
 - Recorded automated development progress entry 32/50.
 
+### [2026-10-13T15:00:13+05:30] perf(sync): batch pending sync requests when reconnecting online
+- Recorded automated development progress entry 33/50.
+
