@@ -119,3 +119,6 @@ All notable updates to PrepZone are documented here.
 ### [2026-10-14T17:35:02+05:30] feat(materials): create material mongoose schema with compound indexes
 - Recorded automated development progress entry 39/50.
 
+### [2026-10-14T20:15:27+05:30] fix(materials): enforce 25mb file size constraint and pdf mime validation
+- Recorded automated development progress entry 40/50.
+
