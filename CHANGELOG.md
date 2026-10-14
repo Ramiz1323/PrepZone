@@ -113,3 +113,6 @@ All notable updates to PrepZone are documented here.
 ### [2026-10-14T12:45:30+05:30] feat(materials): configure imagekit sdk client and credentials validation
 - Recorded automated development progress entry 37/50.
 
+### [2026-10-14T15:10:45+05:30] feat(materials): add multer memory storage middleware for pdf uploads
+- Recorded automated development progress entry 38/50.
+
