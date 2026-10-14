@@ -107,3 +107,6 @@ All notable updates to PrepZone are documented here.
 ### [2026-10-13T20:10:01+05:30] refactor(store): modularize redux slices and export action types
 - Recorded automated development progress entry 35/50.
 
+### [2026-10-14T10:20:15+05:30] feat(materials): initialize study materials and document vault architecture
+- Recorded automated development progress entry 36/50.
+
