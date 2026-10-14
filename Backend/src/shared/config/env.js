@@ -17,4 +17,7 @@ export const env = {
   JWT_EXPIRES_IN: _optional('JWT_EXPIRES_IN', '7d'),
   CLIENT_URL: _optional('CLIENT_URL', 'http://localhost:5173'),
   MISTRAL_API_KEY: _optional('MISTRAL_API_KEY', ''),
+  IMAGEKIT_PUBLIC_KEY: _optional('IMAGEKIT_PUBLIC_KEY', ''),
+  IMAGEKIT_PRIVATE_KEY: _optional('IMAGEKIT_PRIVATE_KEY', ''),
+  IMAGEKIT_URL_ENDPOINT: _optional('IMAGEKIT_URL_ENDPOINT', ''),
 };
