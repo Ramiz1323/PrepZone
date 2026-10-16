@@ -2,11 +2,12 @@ import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logoutUser } from '../store/slices/authSlice';
-import { FiEdit3, FiPieChart, FiList, FiAlertCircle, FiClock, FiLogOut, FiX } from 'react-icons/fi';
+import { FiEdit3, FiPieChart, FiList, FiAlertCircle, FiClock, FiLogOut, FiX, FiFileText } from 'react-icons/fi';
 import clsx from 'clsx';
 import '../styles/components/_bottom-sheet.scss';
 
 const SHEET_ITEMS = [
+  { path: '/materials', name: 'Study Materials', icon: FiFileText },
   { path: '/tracker', name: 'Study Tracker', icon: FiEdit3 },
   { path: '/analytics', name: 'Analytics', icon: FiPieChart },
   { path: '/revision', name: 'Revision', icon: FiList },

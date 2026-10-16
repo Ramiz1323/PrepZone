@@ -149,3 +149,6 @@ All notable updates to PrepZone are documented here.
 ### [2026-10-16T17:30:25+05:30] feat(materials): implement study materials page with search and subject filter
 - Recorded automated development progress entry 49/50.
 
+### [2026-10-16T20:20:50+05:30] feat(materials): integrate study materials navigation in sidebar and bottom sheet
+- Recorded automated development progress entry 50/50.
+

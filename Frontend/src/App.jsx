@@ -19,6 +19,7 @@ const PracticePlayer = lazy(() => import('./modules/practice/PracticePlayer'));
 const PracticeReview = lazy(() => import('./modules/practice/PracticeReview'));
 const Planner = lazy(() => import('./modules/planner/Planner'));
 const RankPredictor = lazy(() => import('./modules/predictor/RankPredictor'));
+const Materials = lazy(() => import('./modules/materials/Materials'));
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
           <Route path="/practice/review/:id" element={<PracticeReview />} />
           <Route path="/planner" element={<Planner />} />
           <Route path="/predictor" element={<RankPredictor />} />
+          <Route path="/materials" element={<Materials />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
