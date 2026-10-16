@@ -1,0 +1,956 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.materials-page {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+  padding-bottom: $spacing-2xl;
+
+  // Header Banner
+  .materials-header {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+
+    @include md {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-info {
+      h1 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: $text-primary;
+        margin-bottom: $spacing-xs;
+
+        @include md {
+          font-size: 2.2rem;
+        }
+      }
+
+      p {
+        color: $text-muted;
+        font-size: 0.95rem;
+        max-width: 650px;
+        line-height: 1.5;
+      }
+    }
+
+    .upload-trigger-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: $spacing-sm;
+      background: $accent-gradient;
+      color: $white;
+      padding: 0.75rem 1.4rem;
+      border-radius: $border-radius-sm;
+      font-weight: 600;
+      box-shadow: $shadow-glow;
+      transition: $transition-base;
+      white-space: nowrap;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 25px rgba(239, 68, 68, 0.6);
+      }
+    }
+  }
+
+  // Stats Grid
+  .materials-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $spacing-md;
+
+    @include sm {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .stat-card {
+      display: flex;
+      align-items: center;
+      gap: $spacing-md;
+      padding: $spacing-lg;
+
+      .stat-icon-wrapper {
+        width: 48px;
+        height: 48px;
+        border-radius: $border-radius-sm;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        flex-shrink: 0;
+
+        &.red {
+          background: rgba(239, 68, 68, 0.15);
+          color: $accent-primary;
+          border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        &.orange {
+          background: rgba(249, 115, 22, 0.15);
+          color: $accent-secondary;
+          border: 1px solid rgba(249, 115, 22, 0.3);
+        }
+
+        &.blue {
+          background: rgba(59, 130, 246, 0.15);
+          color: #60a5fa;
+          border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+      }
+
+      .stat-content {
+        display: flex;
+        flex-direction: column;
+
+        .stat-label {
+          font-size: 0.8rem;
+          color: $text-muted;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+
+        .stat-value {
+          font-size: 1.4rem;
+          font-weight: 700;
+          color: $text-primary;
+        }
+      }
+    }
+  }
+
+  // Filter Card
+  .filter-controls-card {
+    padding: $spacing-md;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+
+    .search-row {
+      .search-input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+
+        .search-icon {
+          position: absolute;
+          left: $spacing-md;
+          color: $text-muted;
+          font-size: 1.1rem;
+          pointer-events: none;
+        }
+
+        input {
+          @include glass-input;
+          padding-left: 2.8rem;
+          padding-right: 2.5rem;
+          font-size: 0.95rem;
+        }
+
+        .clear-search-btn {
+          position: absolute;
+          right: $spacing-md;
+          background: none;
+          border: none;
+          color: $text-muted;
+          cursor: pointer;
+          font-size: 1rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          &:hover {
+            color: $text-primary;
+          }
+        }
+      }
+    }
+
+    .subject-pills-row {
+      display: flex;
+      gap: $spacing-sm;
+      overflow-x: auto;
+      padding-bottom: $spacing-xs;
+      scrollbar-width: thin;
+
+      &::-webkit-scrollbar {
+        height: 4px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+      }
+
+      .subject-pill-btn {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: $text-secondary;
+        font-size: 0.85rem;
+        padding: 0.4rem 0.9rem;
+        border-radius: $border-radius-pill;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: $transition-base;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.08);
+          color: $text-primary;
+        }
+
+        &.active {
+          background: rgba(239, 68, 68, 0.2);
+          border-color: $accent-primary;
+          color: #fca5a5;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  // Materials Grid
+  .materials-container {
+    .materials-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: $spacing-lg;
+
+      @include sm {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @include lg {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .material-card {
+        padding: $spacing-lg;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: $spacing-md;
+        cursor: pointer;
+        transition: $transition-base;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+
+        &:hover {
+          transform: translateY(-4px);
+          border-color: rgba(239, 68, 68, 0.3);
+          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+
+          .pdf-art-box {
+            transform: scale(1.05);
+          }
+        }
+
+        .card-top {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: $spacing-sm;
+
+          .subject-badge {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.6rem;
+            border-radius: $border-radius-pill;
+            border: 1px solid rgba(239, 68, 68, 0.25);
+          }
+
+          .file-size-badge {
+            font-size: 0.75rem;
+            color: $text-muted;
+          }
+        }
+
+        .card-main {
+          display: flex;
+          gap: $spacing-md;
+          align-items: flex-start;
+
+          .pdf-art-box {
+            width: 44px;
+            height: 52px;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(249, 115, 22, 0.1));
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: $border-radius-sm;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: $transition-bounce;
+
+            .pdf-art-icon {
+              font-size: 1.3rem;
+              color: $accent-primary;
+            }
+
+            .pdf-label {
+              font-size: 0.55rem;
+              font-weight: 800;
+              letter-spacing: 0.05em;
+              color: #fca5a5;
+              margin-top: 1px;
+            }
+          }
+
+          .card-text {
+            flex: 1;
+            min-width: 0;
+
+            .material-title {
+              font-size: 1.05rem;
+              font-weight: 600;
+              color: $text-primary;
+              line-height: 1.3;
+              margin-bottom: $spacing-xs;
+              display: -webkit-box;
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical;
+              overflow: hidden;
+            }
+
+            .material-desc {
+              font-size: 0.82rem;
+              color: $text-muted;
+              line-height: 1.4;
+              display: -webkit-box;
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical;
+              overflow: hidden;
+            }
+          }
+        }
+
+        .card-tags {
+          display: flex;
+          flex-wrap: wrap;
+          gap: $spacing-xs;
+
+          .tag-pill {
+            font-size: 0.7rem;
+            background: rgba(255, 255, 255, 0.04);
+            color: $text-muted;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+          }
+
+          .tag-more {
+            font-size: 0.7rem;
+            color: $text-muted;
+          }
+        }
+
+        .card-footer {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding-top: $spacing-sm;
+          border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+          .upload-date {
+            display: flex;
+            align-items: center;
+            gap: $spacing-xs;
+            font-size: 0.75rem;
+            color: $text-muted;
+
+            .clock-icon {
+              font-size: 0.8rem;
+            }
+          }
+
+          .card-actions {
+            display: flex;
+            align-items: center;
+            gap: $spacing-xs;
+
+            .icon-action-btn {
+              background: rgba(255, 255, 255, 0.05);
+              border: 1px solid rgba(255, 255, 255, 0.08);
+              color: $text-secondary;
+              width: 32px;
+              height: 32px;
+              border-radius: 6px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 0.9rem;
+              cursor: pointer;
+              transition: $transition-base;
+
+              &.view-btn:hover {
+                background: rgba(59, 130, 246, 0.2);
+                border-color: #3b82f6;
+                color: #60a5fa;
+              }
+
+              &.download-btn:hover {
+                background: rgba(16, 185, 129, 0.2);
+                border-color: #10b981;
+                color: #34d399;
+              }
+
+              &.delete-btn:hover {
+                background: rgba(239, 68, 68, 0.2);
+                border-color: #ef4444;
+                color: #f87171;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // Empty state
+    .empty-materials-card {
+      padding: 3rem $spacing-xl;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: $spacing-md;
+
+      .empty-icon-box {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .empty-icon {
+          font-size: 1.8rem;
+          color: $accent-primary;
+        }
+      }
+
+      h3 {
+        font-size: 1.3rem;
+        color: $text-primary;
+        font-weight: 600;
+      }
+
+      p {
+        color: $text-muted;
+        font-size: 0.92rem;
+        max-width: 480px;
+        line-height: 1.5;
+      }
+
+      .empty-cta-btn {
+        margin-top: $spacing-sm;
+        display: inline-flex;
+        align-items: center;
+        gap: $spacing-sm;
+      }
+    }
+  }
+}
+
+// Upload Modal Styling
+.upload-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-md;
+
+  .upload-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(6px);
+  }
+
+  .upload-modal-container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 580px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #111114;
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    border-radius: $border-radius-md;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), $shadow-glow;
+    padding: $spacing-xl;
+    animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+
+    .upload-modal-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: $spacing-lg;
+
+      .title-area {
+        h3 {
+          font-size: 1.3rem;
+          font-weight: 700;
+          color: $text-primary;
+          margin-bottom: $spacing-xs;
+        }
+
+        p {
+          font-size: 0.85rem;
+          color: $text-muted;
+        }
+      }
+
+      .close-btn {
+        background: none;
+        border: none;
+        color: $text-muted;
+        font-size: 1.3rem;
+        cursor: pointer;
+        padding: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+          color: $text-primary;
+        }
+      }
+    }
+
+    .upload-form {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-lg;
+
+      .dropzone {
+        border: 2px dashed rgba(239, 68, 68, 0.3);
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: $border-radius-sm;
+        padding: $spacing-xl;
+        text-align: center;
+        cursor: pointer;
+        transition: $transition-base;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: $spacing-xs;
+
+        &:hover,
+        &.drag-over {
+          border-color: $accent-primary;
+          background: rgba(239, 68, 68, 0.05);
+          box-shadow: 0 0 20px rgba(239, 68, 68, 0.15);
+        }
+
+        .hidden-file-input {
+          display: none;
+        }
+
+        .dropzone-icon {
+          font-size: 2.2rem;
+          color: $accent-primary;
+          margin-bottom: $spacing-xs;
+        }
+
+        h4 {
+          font-size: 1rem;
+          color: $text-primary;
+          font-weight: 600;
+        }
+
+        .dropzone-hint {
+          font-size: 0.8rem;
+          color: $text-muted;
+        }
+      }
+
+      .selected-file-card {
+        display: flex;
+        align-items: center;
+        gap: $spacing-md;
+        background: rgba(239, 68, 68, 0.08);
+        border: 1px solid rgba(239, 68, 68, 0.25);
+        border-radius: $border-radius-sm;
+        padding: $spacing-md;
+
+        .file-icon-box {
+          font-size: 1.4rem;
+          color: $accent-primary;
+          display: flex;
+          align-items: center;
+        }
+
+        .file-details {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+
+          .file-name {
+            font-size: 0.9rem;
+            color: $text-primary;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          .file-size {
+            font-size: 0.75rem;
+            color: $text-muted;
+          }
+        }
+
+        .remove-file-btn {
+          background: none;
+          border: none;
+          color: $text-muted;
+          font-size: 1.1rem;
+          cursor: pointer;
+
+          &:hover {
+            color: #f87171;
+          }
+        }
+      }
+
+      .form-fields {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-md;
+
+        .form-group {
+          display: flex;
+          flex-direction: column;
+          gap: $spacing-xs;
+
+          label {
+            font-size: 0.85rem;
+            color: $text-secondary;
+            font-weight: 500;
+          }
+
+          .select-input {
+            @include glass-input;
+            cursor: pointer;
+            appearance: none;
+            background-color: #141418;
+          }
+
+          .textarea-input {
+            @include glass-input;
+            resize: vertical;
+            min-height: 70px;
+          }
+
+          .tag-input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+
+            .tag-icon {
+              position: absolute;
+              left: $spacing-md;
+              color: $text-muted;
+              font-size: 0.9rem;
+            }
+
+            input {
+              @include glass-input;
+              padding-left: 2.5rem;
+            }
+          }
+
+          .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: $spacing-xs;
+            margin-top: $spacing-xs;
+
+            .tag-chip {
+              display: inline-flex;
+              align-items: center;
+              gap: 4px;
+              background: rgba(239, 68, 68, 0.15);
+              border: 1px solid rgba(239, 68, 68, 0.3);
+              color: #fca5a5;
+              font-size: 0.75rem;
+              padding: 0.2rem 0.5rem;
+              border-radius: 4px;
+
+              button {
+                background: none;
+                border: none;
+                color: #fca5a5;
+                cursor: pointer;
+                font-size: 0.9rem;
+                line-height: 1;
+
+                &:hover {
+                  color: $white;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .upload-progress-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-xs;
+
+        .progress-info {
+          display: flex;
+          justify-content: space-between;
+          font-size: 0.8rem;
+          color: $text-secondary;
+        }
+
+        .progress-bar-bg {
+          width: 100%;
+          height: 6px;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 4px;
+          overflow: hidden;
+
+          .progress-bar-fill {
+            height: 100%;
+            background: $accent-gradient;
+            transition: width 0.3s ease;
+          }
+        }
+      }
+
+      .upload-alert {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        padding: $spacing-md;
+        border-radius: $border-radius-sm;
+        font-size: 0.85rem;
+
+        &.error {
+          background: rgba(239, 68, 68, 0.12);
+          border: 1px solid rgba(239, 68, 68, 0.35);
+          color: #fca5a5;
+
+          .alert-icon {
+            font-size: 1.1rem;
+            flex-shrink: 0;
+          }
+        }
+      }
+
+      .upload-modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: $spacing-md;
+        margin-top: $spacing-xs;
+      }
+    }
+  }
+}
+
+// PDF Viewer Modal
+.pdf-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-md;
+
+  @include sm {
+    padding: $spacing-xl;
+  }
+
+  &.fullscreen {
+    padding: 0;
+  }
+
+  .pdf-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+  }
+
+  .pdf-modal-container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 1200px;
+    height: 88vh;
+    display: flex;
+    flex-direction: column;
+    background: #0d0d11;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: $border-radius-md;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), $shadow-glow;
+    overflow: hidden;
+    animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+
+    &.is-fullscreen {
+      max-width: 100vw;
+      height: 100vh;
+      border-radius: 0;
+      border: none;
+    }
+
+    .pdf-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: $spacing-md;
+      padding: $spacing-md $spacing-lg;
+      background: rgba(20, 20, 26, 0.95);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+      .pdf-info {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        min-width: 0;
+
+        .pdf-title-row {
+          display: flex;
+          align-items: center;
+          gap: $spacing-sm;
+
+          .pdf-icon-badge {
+            color: $accent-primary;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+          }
+
+          .pdf-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: $text-primary;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+
+        .pdf-meta-row {
+          display: flex;
+          align-items: center;
+          gap: $spacing-xs;
+          font-size: 0.75rem;
+          color: $text-muted;
+
+          .subject-pill {
+            color: #f87171;
+            font-weight: 500;
+          }
+
+          .file-name {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 250px;
+          }
+        }
+      }
+
+      .pdf-actions {
+        display: flex;
+        align-items: center;
+        gap: $spacing-xs;
+        flex-shrink: 0;
+
+        .mode-switch-btn {
+          display: none;
+
+          @include sm {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0.4rem 0.7rem;
+            font-size: 0.8rem;
+            width: auto;
+          }
+        }
+
+        .download-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+
+          .btn-text {
+            display: none;
+            @include sm {
+              display: inline;
+            }
+          }
+        }
+
+        .action-icon-btn {
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          color: $text-secondary;
+          width: 36px;
+          height: 36px;
+          border-radius: $border-radius-sm;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: $transition-base;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: $text-primary;
+          }
+
+          &.close-modal-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: $accent-primary;
+            color: #f87171;
+          }
+        }
+      }
+    }
+
+    .pdf-modal-body {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      position: relative;
+
+      .pdf-iframe-frame {
+        width: 100%;
+        height: 100%;
+        border: none;
+        display: block;
+        background: #111;
+      }
+    }
+  }
+}
+
+@keyframes modalPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.96) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
