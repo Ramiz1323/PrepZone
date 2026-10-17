@@ -7,9 +7,8 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'prompt',
-      // SW is registered via `useRegisterSW` (see `src/components/ReloadPrompt.jsx`)
-      injectRegister: null,
-      includeAssets: ['logo.png', 'pwa-192.png', 'pwa-512.png', 'apple-touch-icon.png'],
+      injectRegister: 'auto',
+      includeAssets: ['favicon.ico', 'logo.png', 'pwa-192.png', 'pwa-512.png', 'apple-touch-icon.png'],
       manifest: {
         id: '/',
         name: 'PrepZone - JECA Prep Tracker',
@@ -22,20 +21,22 @@ export default defineConfig({
         start_url: '/',
         icons: [
           {
-            src: 'pwa-192.png',
+            src: '/pwa-192.png',
             sizes: '192x192',
             type: 'image/png',
+            purpose: 'any',
           },
           {
-            src: 'pwa-512.png',
+            src: '/pwa-512.png',
             sizes: '512x512',
             type: 'image/png',
+            purpose: 'any',
           },
           {
-            src: 'pwa-512.png',
+            src: '/pwa-512.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'any maskable',
+            purpose: 'maskable',
           },
         ],
       },
