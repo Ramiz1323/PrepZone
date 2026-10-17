@@ -12,6 +12,8 @@ import {
   FiClock,
   FiX,
   FiBook,
+  FiChevronLeft,
+  FiChevronRight,
 } from 'react-icons/fi';
 import {
   fetchMaterials,
@@ -69,6 +71,31 @@ const Materials = () => {
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [viewingMaterial, setViewingMaterial] = useState(null);
   const [downloadingId, setDownloadingId] = useState(null);
+
+  const pillsRef = React.useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const checkPillsScroll = () => {
+    if (pillsRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = pillsRef.current;
+      setCanScrollLeft(scrollLeft > 6);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 6);
+    }
+  };
+
+  useEffect(() => {
+    checkPillsScroll();
+    window.addEventListener('resize', checkPillsScroll);
+    return () => window.removeEventListener('resize', checkPillsScroll);
+  }, []);
+
+  const handlePillsScroll = (direction) => {
+    if (pillsRef.current) {
+      const offset = direction === 'left' ? -220 : 220;
+      pillsRef.current.scrollBy({ left: offset, behavior: 'smooth' });
+    }
+  };
 
   useEffect(() => {
     dispatch(
@@ -200,18 +227,48 @@ const Materials = () => {
           </div>
         </div>
 
-        {/* Subject Pills */}
-        <div className="subject-pills-row">
-          {SUBJECTS.map((sub) => (
+        {/* Subject Pills with Desktop Scroll Arrows & Mobile Touch Scroll */}
+        <div className="subject-pills-container">
+          {canScrollLeft && (
             <button
-              key={sub}
               type="button"
-              className={`subject-pill-btn ${selectedSubject === sub ? 'active' : ''}`}
-              onClick={() => dispatch(setSelectedSubject(sub))}
+              className="pills-scroll-arrow left"
+              onClick={() => handlePillsScroll('left')}
+              aria-label="Scroll subjects left"
+              title="Scroll left"
             >
-              {sub}
+              <FiChevronLeft />
             </button>
-          ))}
+          )}
+
+          <div
+            className="subject-pills-row"
+            ref={pillsRef}
+            onScroll={checkPillsScroll}
+          >
+            {SUBJECTS.map((sub) => (
+              <button
+                key={sub}
+                type="button"
+                className={`subject-pill-btn ${selectedSubject === sub ? 'active' : ''}`}
+                onClick={() => dispatch(setSelectedSubject(sub))}
+              >
+                {sub}
+              </button>
+            ))}
+          </div>
+
+          {canScrollRight && (
+            <button
+              type="button"
+              className="pills-scroll-arrow right"
+              onClick={() => handlePillsScroll('right')}
+              aria-label="Scroll subjects right"
+              title="Scroll right"
+            >
+              <FiChevronRight />
+            </button>
+          )}
         </div>
       </GlassCard>
 
