@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.use(authenticate);
 
-router.post('/', uploadPdf.single('file'), uploadMaterialItem);
+router.post('/', uploadPdf, uploadMaterialItem);
 router.get('/', getMaterialItems);
 router.get('/:id', getMaterialItem);
 router.delete('/:id', deleteMaterialItem);
