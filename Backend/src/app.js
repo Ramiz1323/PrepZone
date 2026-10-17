@@ -23,7 +23,8 @@ app.use(
   cors({
     origin: (origin, callback) => {
       const allowed = [env.CLIENT_URL, 'http://localhost:5173', 'http://localhost:3000'];
-      if (!origin || allowed.includes(origin)) {
+      const isVercel = origin && (origin.endsWith('.vercel.app') || origin === 'https://vercel.app');
+      if (!origin || allowed.includes(origin) || isVercel) {
         callback(null, true);
       } else {
         callback(new Error(`CORS blocked: ${origin}`));
