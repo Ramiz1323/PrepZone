@@ -6,7 +6,7 @@ import '../styles/components/_bottom-navbar.scss';
 
 const BOTTOM_NAV_ITEMS = [
   { path: '/dashboard', name: 'Dashboard', icon: FiHome },
-  { path: '/practice', name: 'MCQ Tests', icon: FiBookOpen },
+  { path: '/practice', name: 'Practice', icon: FiBookOpen },
   { path: '/planner', name: 'Planner', icon: FiCalendar },
   { path: '/predictor', name: 'Rank', icon: FiTrendingUp },
 ];

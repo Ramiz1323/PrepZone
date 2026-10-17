@@ -57,7 +57,7 @@ const Topbar = () => {
     <header className="topbar">
       <div className="topbar-left">
         <div className="page-title">
-          <h2><span className="welcome-text">Welcome back, </span><span className="highlight">{user?.name?.split(' ')[0] || 'User'}</span> 👋</h2>
+          <h2><span className="welcome-text">Hi, </span><span className="highlight">{user?.name?.split(' ')[0] || 'User'}</span></h2>
         </div>
       </div>
 

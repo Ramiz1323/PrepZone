@@ -6,6 +6,7 @@
 .layout-wrapper {
   display: flex;
   height: 100vh;
+  height: 100dvh;
   width: 100vw;
   position: relative;
   overflow: hidden;
@@ -16,39 +17,29 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
+  height: 100dvh;
   width: 100%;
-  padding: 0; // Padding handled by internal containers
+  padding: 0;
   transition: padding-left 0.4s ease;
 
   @include lg {
     padding-left: 250px + ($spacing-md * 2); // Sidebar width + margin
   }
 
-  .topbar {
-  @include glass-panel;
-  flex-shrink: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 $spacing-xl;
-  height: 80px;
-  border-radius: 0;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  background: rgba($bg-gradient-start, 0.5);
-  backdrop-filter: blur(10px);
-  z-index: 100;
-  }
-
   .page-container {
     flex: 1;
     min-height: 0; // Prevent content from expanding parent flex height
     padding: $spacing-md;
-    padding-bottom: 96px; // Ensure bottom navbar does not overlap scrollable content
+    padding-bottom: calc(76px + env(safe-area-inset-bottom, 12px)); // Safe clearance above bottom navbar
+
+    @media (max-width: 640px) {
+      padding: 12px;
+      padding-bottom: calc(76px + env(safe-area-inset-bottom, 12px));
+    }
     
     @media (min-width: 768px) {
-      padding-bottom: $spacing-md;
+      padding: $spacing-lg;
+      padding-bottom: $spacing-xl;
     }
     
     @include lg {
@@ -60,7 +51,7 @@
     overscroll-behavior: contain;
     
     // Page level transition animations
-    animation: fadeIn 0.5s ease;
+    animation: fadeIn 0.4s ease;
   }
 }
 
