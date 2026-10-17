@@ -865,56 +865,91 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: $spacing-md;
-      padding: $spacing-md $spacing-lg;
-      background: rgba(20, 20, 26, 0.95);
+      gap: $spacing-sm;
+      padding: 0.75rem 1rem;
+      background: rgba(18, 18, 24, 0.98);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      min-height: 56px;
+
+      @include sm {
+        gap: $spacing-md;
+        padding: 0.85rem 1.4rem;
+        min-height: 60px;
+      }
 
       .pdf-info {
         display: flex;
         flex-direction: column;
+        justify-content: center;
         overflow: hidden;
         min-width: 0;
+        flex: 1;
+        gap: 3px;
 
         .pdf-title-row {
           display: flex;
           align-items: center;
           gap: $spacing-sm;
+          min-width: 0;
 
           .pdf-icon-badge {
             color: $accent-primary;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             display: flex;
             align-items: center;
+            flex-shrink: 0;
           }
 
           .pdf-title {
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             font-weight: 600;
             color: $text-primary;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            margin: 0;
+
+            @include sm {
+              font-size: 1.05rem;
+            }
           }
         }
 
         .pdf-meta-row {
           display: flex;
           align-items: center;
-          gap: $spacing-xs;
-          font-size: 0.75rem;
+          gap: 6px;
+          font-size: 0.72rem;
           color: $text-muted;
+          min-width: 0;
 
           .subject-pill {
-            color: #f87171;
-            font-weight: 500;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            color: #fca5a5;
+            padding: 1px 7px;
+            border-radius: 9999px;
+            font-weight: 600;
+            white-space: nowrap;
+          }
+
+          .meta-dot {
+            color: rgba(255, 255, 255, 0.2);
           }
 
           .file-name {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 250px;
+            max-width: 140px;
+
+            @include sm {
+              max-width: 240px;
+            }
+
+            @include md {
+              max-width: 360px;
+            }
           }
         }
       }
@@ -922,58 +957,114 @@
       .pdf-actions {
         display: flex;
         align-items: center;
-        gap: $spacing-xs;
+        gap: 8px;
         flex-shrink: 0;
 
-        .mode-switch-btn {
-          display: none;
-
-          @include sm {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 0.4rem 0.7rem;
-            font-size: 0.8rem;
-            width: auto;
-          }
-        }
-
-        .download-btn {
+        // Unified Action Button Styling for perfect consistency
+        .action-btn {
+          height: 36px;
+          border-radius: 8px;
           display: inline-flex;
           align-items: center;
+          justify-content: center;
           gap: 6px;
+          font-size: 0.85rem;
+          font-weight: 500;
+          line-height: 1;
+          white-space: nowrap;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          box-sizing: border-box;
+          user-select: none;
+          flex-shrink: 0;
 
-          .btn-text {
-            display: none;
-            @include sm {
-              display: inline;
+          .btn-icon {
+            font-size: 1rem;
+            flex-shrink: 0;
+          }
+
+          // Icon-only buttons (External Link, Fullscreen, Close)
+          &.icon-btn {
+            width: 36px;
+            padding: 0;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: $text-secondary;
+
+            &:hover {
+              background: rgba(255, 255, 255, 0.12);
+              border-color: rgba(255, 255, 255, 0.2);
+              color: $white;
+            }
+
+            &.close-btn:hover {
+              background: rgba(239, 68, 68, 0.2);
+              border-color: $accent-primary;
+              color: #f87171;
             }
           }
-        }
 
-        .action-icon-btn {
-          background: rgba(255, 255, 255, 0.06);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          color: $text-secondary;
-          width: 36px;
-          height: 36px;
-          border-radius: $border-radius-sm;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 1rem;
-          cursor: pointer;
-          transition: $transition-base;
+          // Mode Switcher Button (Direct / Alt Viewer)
+          &.mode-switch-btn {
+            width: 36px;
+            padding: 0;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: $text-secondary;
 
-          &:hover {
-            background: rgba(255, 255, 255, 0.12);
-            color: $text-primary;
+            @include sm {
+              width: auto;
+              padding: 0 10px;
+            }
+
+            &:hover {
+              background: rgba(255, 255, 255, 0.1);
+              border-color: rgba(255, 255, 255, 0.2);
+              color: $white;
+            }
+
+            .btn-text {
+              display: none;
+
+              @include sm {
+                display: inline;
+              }
+            }
           }
 
-          &.close-modal-btn:hover {
-            background: rgba(239, 68, 68, 0.2);
-            border-color: $accent-primary;
-            color: #f87171;
+          // Download Action Button
+          &.download-action-btn {
+            width: 36px;
+            padding: 0;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.35);
+            color: #fca5a5;
+            font-weight: 600;
+
+            @include sm {
+              width: auto;
+              padding: 0 12px;
+            }
+
+            &:hover:not(:disabled) {
+              background: rgba(239, 68, 68, 0.25);
+              border-color: $accent-primary;
+              color: $white;
+              box-shadow: 0 0 16px rgba(239, 68, 68, 0.35);
+            }
+
+            &:disabled {
+              opacity: 0.6;
+              cursor: not-allowed;
+            }
+
+            .btn-text {
+              display: none;
+
+              @include sm {
+                display: inline;
+              }
+            }
           }
         }
       }

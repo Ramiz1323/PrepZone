@@ -80,31 +80,32 @@ const PdfViewerModal = ({ material, isOpen, onClose }) => {
             {/* Viewer Mode Switcher */}
             <button
               type="button"
-              className="action-icon-btn mode-switch-btn"
+              className="action-btn mode-switch-btn"
               title={`Switch to ${viewerMode === 'native' ? 'Google Docs Viewer' : 'Direct Viewer'}`}
               onClick={() => setViewerMode(viewerMode === 'native' ? 'google' : 'native')}
             >
-              <FiRefreshCw />
-              <span className="btn-label">{viewerMode === 'native' ? 'Alternate View' : 'Direct View'}</span>
+              <FiRefreshCw className="btn-icon" />
+              <span className="btn-text">
+                {viewerMode === 'native' ? 'Alt View' : 'Direct View'}
+              </span>
             </button>
 
             {/* Download Button */}
-            <Button
-              variant="outline"
-              size="sm"
+            <button
+              type="button"
+              className="action-btn download-action-btn"
               onClick={handleDownload}
-              isLoading={isDownloading}
-              className="download-btn"
+              disabled={isDownloading}
               title="Download PDF"
             >
-              <FiDownload />
-              <span className="btn-text">Download</span>
-            </Button>
+              <FiDownload className="btn-icon" />
+              <span className="btn-text">{isDownloading ? 'Downloading...' : 'Download'}</span>
+            </button>
 
             {/* Open in New Window */}
             <button
               type="button"
-              className="action-icon-btn"
+              className="action-btn icon-btn"
               onClick={openInNewTab}
               title="Open in new window"
               aria-label="Open in new window"
@@ -115,7 +116,7 @@ const PdfViewerModal = ({ material, isOpen, onClose }) => {
             {/* Toggle Fullscreen */}
             <button
               type="button"
-              className="action-icon-btn"
+              className="action-btn icon-btn"
               onClick={toggleFullscreen}
               title={isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
               aria-label="Toggle Fullscreen"
@@ -126,7 +127,7 @@ const PdfViewerModal = ({ material, isOpen, onClose }) => {
             {/* Close Button */}
             <button
               type="button"
-              className="action-icon-btn close-modal-btn"
+              className="action-btn icon-btn close-btn"
               onClick={onClose}
               title="Close Viewer"
               aria-label="Close Viewer"
