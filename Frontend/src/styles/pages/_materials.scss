@@ -822,7 +822,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: $spacing-md;
+  padding: 0;
 
   @include sm {
     padding: $spacing-xl;
@@ -842,34 +842,42 @@
   .pdf-modal-container {
     position: relative;
     z-index: 1;
-    width: 100%;
-    max-width: 1200px;
-    height: 88vh;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
     display: flex;
     flex-direction: column;
     background: #0d0d11;
-    border: 1px solid rgba(239, 68, 68, 0.3);
-    border-radius: $border-radius-md;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), $shadow-glow;
     overflow: hidden;
     animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 
+    @include sm {
+      width: 100%;
+      max-width: 1200px;
+      height: 88vh;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: $border-radius-md;
+    }
+
     &.is-fullscreen {
-      max-width: 100vw;
-      height: 100vh;
-      border-radius: 0;
-      border: none;
+      width: 100vw !important;
+      max-width: 100vw !important;
+      height: 100vh !important;
+      border-radius: 0 !important;
+      border: none !important;
     }
 
     .pdf-modal-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: $spacing-sm;
-      padding: 0.75rem 1rem;
+      gap: 8px;
+      padding: 0.6rem 0.8rem;
       background: rgba(18, 18, 24, 0.98);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      min-height: 56px;
+      min-height: 52px;
+      flex-shrink: 0;
 
       @include sm {
         gap: $spacing-md;
@@ -884,30 +892,31 @@
         overflow: hidden;
         min-width: 0;
         flex: 1;
-        gap: 3px;
+        gap: 2px;
 
         .pdf-title-row {
           display: flex;
           align-items: center;
-          gap: $spacing-sm;
+          gap: 6px;
           min-width: 0;
 
           .pdf-icon-badge {
             color: $accent-primary;
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             display: flex;
             align-items: center;
             flex-shrink: 0;
           }
 
           .pdf-title {
-            font-size: 0.95rem;
+            font-size: 0.88rem;
             font-weight: 600;
             color: $text-primary;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             margin: 0;
+            line-height: 1.2;
 
             @include sm {
               font-size: 1.05rem;
@@ -919,7 +928,7 @@
           display: flex;
           align-items: center;
           gap: 6px;
-          font-size: 0.72rem;
+          font-size: 0.7rem;
           color: $text-muted;
           min-width: 0;
 
@@ -927,24 +936,31 @@
             background: rgba(239, 68, 68, 0.15);
             border: 1px solid rgba(239, 68, 68, 0.25);
             color: #fca5a5;
-            padding: 1px 7px;
+            padding: 1px 6px;
             border-radius: 9999px;
             font-weight: 600;
+            font-size: 0.68rem;
             white-space: nowrap;
+            flex-shrink: 0;
           }
 
           .meta-dot {
-            color: rgba(255, 255, 255, 0.2);
+            display: none;
+            @include sm {
+              display: inline;
+              color: rgba(255, 255, 255, 0.2);
+            }
           }
 
           .file-name {
+            display: none;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 140px;
 
             @include sm {
-              max-width: 240px;
+              display: inline;
+              max-width: 220px;
             }
 
             @include md {
@@ -957,18 +973,21 @@
       .pdf-actions {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
         flex-shrink: 0;
 
-        // Unified Action Button Styling for perfect consistency
+        @include sm {
+          gap: 8px;
+        }
+
         .action-btn {
-          height: 36px;
+          height: 34px;
           border-radius: 8px;
           display: inline-flex;
           align-items: center;
           justify-content: center;
           gap: 6px;
-          font-size: 0.85rem;
+          font-size: 0.82rem;
           font-weight: 500;
           line-height: 1;
           white-space: nowrap;
@@ -978,18 +997,26 @@
           user-select: none;
           flex-shrink: 0;
 
+          @include sm {
+            height: 36px;
+            font-size: 0.85rem;
+          }
+
           .btn-icon {
-            font-size: 1rem;
+            font-size: 0.95rem;
             flex-shrink: 0;
           }
 
-          // Icon-only buttons (External Link, Fullscreen, Close)
           &.icon-btn {
-            width: 36px;
+            width: 34px;
             padding: 0;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: $text-secondary;
+
+            @include sm {
+              width: 36px;
+            }
 
             &:hover {
               background: rgba(255, 255, 255, 0.12);
@@ -997,16 +1024,29 @@
               color: $white;
             }
 
-            &.close-btn:hover {
-              background: rgba(239, 68, 68, 0.2);
-              border-color: $accent-primary;
-              color: #f87171;
+            &.close-btn {
+              background: rgba(239, 68, 68, 0.1);
+              border-color: rgba(239, 68, 68, 0.25);
+              color: #fca5a5;
+
+              &:hover {
+                background: rgba(239, 68, 68, 0.25);
+                border-color: $accent-primary;
+                color: #ffffff;
+              }
+            }
+
+            &.fullscreen-btn {
+              display: none !important;
+
+              @include md {
+                display: inline-flex !important;
+              }
             }
           }
 
-          // Mode Switcher Button (Direct / Alt Viewer)
           &.mode-switch-btn {
-            width: 36px;
+            width: 34px;
             padding: 0;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -1018,7 +1058,7 @@
             }
 
             &:hover {
-              background: rgba(255, 255, 255, 0.1);
+              background: rgba(255, 255, 255, 0.12);
               border-color: rgba(255, 255, 255, 0.2);
               color: $white;
             }
@@ -1032,9 +1072,8 @@
             }
           }
 
-          // Download Action Button
           &.download-action-btn {
-            width: 36px;
+            width: 34px;
             padding: 0;
             background: rgba(239, 68, 68, 0.15);
             border: 1px solid rgba(239, 68, 68, 0.35);
@@ -1070,10 +1109,55 @@
       }
     }
 
+    .pdf-viewer-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: $spacing-sm;
+      padding: 0.35rem 0.8rem;
+      background: rgba(12, 12, 16, 0.98);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.72rem;
+      flex-shrink: 0;
+
+      @include sm {
+        padding: 0.45rem 1.4rem;
+        font-size: 0.78rem;
+      }
+
+      .bar-label {
+        color: $text-muted;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .bar-toggle-btn {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.25);
+        color: #fca5a5;
+        border-radius: 4px;
+        padding: 2px 8px;
+        font-size: 0.7rem;
+        font-weight: 500;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: $transition-base;
+        flex-shrink: 0;
+
+        &:hover {
+          background: rgba(239, 68, 68, 0.2);
+          border-color: $accent-primary;
+          color: $white;
+        }
+      }
+    }
+
     .pdf-modal-body {
       flex: 1;
       width: 100%;
       height: 100%;
+      min-height: 0;
       background: #000;
       position: relative;
 
