@@ -65,7 +65,10 @@ const Planner = () => {
   const handleImport = async () => {
     try {
       setError(null);
-      const parsed = JSON.parse(jsonInput);
+      let cleaned = jsonInput.trim();
+      cleaned = cleaned.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '');
+      cleaned = cleaned.replace(/\\([^"\\\/bfnrtu])/g, '$1');
+      const parsed = JSON.parse(cleaned);
       if (!Array.isArray(parsed)) throw new Error('Input must be a JSON array');
       
       await dispatch(savePlanner({ 
@@ -127,7 +130,7 @@ Subjects to cover: ${aiConfig.subjects}
 Syllabus/Focus Areas: ${aiConfig.syllabus || 'standard syllabus'}
 Daily MCQ Target: ${aiConfig.mcqTarget}
 
-Please generate a study plan in the following STRICT JSON format (no chat text, only JSON):
+Please generate a study plan in the following STRICT, valid JSON format:
 [
   {
     "date": "YYYY-MM-DD",
@@ -137,7 +140,12 @@ Please generate a study plan in the following STRICT JSON format (no chat text, 
   }
 ]
 
-Ensure the dates are consecutive and properly cover the syllabus across the specified subjects.`;
+CRITICAL FORMATTING RULES:
+1. Output ONLY the raw JSON array (do NOT include conversational text or markdown code fences).
+2. Do NOT escape markdown characters with backslashes (never write \\_ or \\* inside strings).
+3. Ensure dates are consecutive and formatted strictly as YYYY-MM-DD.
+4. Ensure topics is an array of strings.
+5. Properly distribute and cover the syllabus across the specified subjects.`;
     
     setGeneratedPrompt(prompt);
   };

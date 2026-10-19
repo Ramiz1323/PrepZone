@@ -24,9 +24,25 @@ const ImportModal = ({ isOpen, onClose, onImport, loading }) => {
 
   if (!isOpen) return null;
 
-  const generatedPrompt = `Generate ${questionCount} ${difficulty} level MCQs for ${subject} on the topic "${topic || '(Topic Name)'}" at a JECA exam difficulty level in valid JSON format. 
-Structure: [ { "question": "...", "codeSnippet": "...", "options": ["...", "...", "...", "..."], "answer": 0 } ]
-Requirement: Output ONLY the JSON array. If a question is code-based, put the code in the "codeSnippet" field (use \n for newlines), otherwise leave it as null or empty string. No conversational text.`;
+  const generatedPrompt = `Generate ${questionCount} ${difficulty} level MCQs for ${subject} on the topic "${topic || '(Topic Name)'}" at a JECA exam difficulty level in raw, valid JSON format.
+
+JSON Structure:
+[
+  {
+    "question": "Question text here",
+    "codeSnippet": "#include <stdio.h>\\nint main() { ... }",
+    "options": ["Option A", "Option B", "Option C", "Option D"],
+    "answer": 0
+  }
+]
+
+CRITICAL FORMATTING RULES:
+1. Output ONLY the raw JSON array (do NOT include conversational text or markdown code fences).
+2. For code-based questions, put the code in "codeSnippet" using "\\n" for newlines; for non-code questions, set "codeSnippet": null.
+3. Use standard JSON quotes (\\") inside strings (e.g., printf(\\"%d\\", x);).
+4. NEVER escape markdown characters with backslashes. Do NOT output \\*, \\_, \\<, \\>, or \\~ (write <stdio.h>, not \\<stdio.h>; write a * b, not a \\* b; write _var, not \\_var).
+5. "options" must contain exactly 4 distinct choices.
+6. "answer" must be a 0-based integer index (0 for Option 1, 1 for Option 2, 2 for Option 3, 3 for Option 4).`;
 
   const handleCopyPrompt = () => {
     navigator.clipboard.writeText(generatedPrompt);
@@ -37,9 +53,24 @@ Requirement: Output ONLY the JSON array. If a question is code-based, put the co
   const handleSubmit = (e) => {
     e.preventDefault();
     try {
-      const questions = JSON.parse(jsonText);
+      let cleaned = jsonText.trim();
+      // Strip markdown code fences if wrapped in ```json ... ``` or ``` ... ```
+      cleaned = cleaned.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '');
+      // Strip rogue markdown backslashes before non-standard JSON escape characters (e.g. \<, \*, \_, \~)
+      cleaned = cleaned.replace(/\\([^"\\\/bfnrtu])/g, '$1');
+
+      let questions = JSON.parse(cleaned);
       if (!Array.isArray(questions)) throw new Error('Root must be an array');
       
+      // Auto-clean any double-escaped literal quotes inside strings from ChatGPT
+      const fixQuotes = (str) => (typeof str === 'string' ? str.replace(/\\"/g, '"') : str);
+      questions = questions.map(q => ({
+        ...q,
+        question: fixQuotes(q.question),
+        codeSnippet: q.codeSnippet ? fixQuotes(q.codeSnippet) : q.codeSnippet,
+        options: Array.isArray(q.options) ? q.options.map(fixQuotes) : q.options
+      }));
+
       onImport({
         title: `${subject} - ${topic}`,
         subject,
@@ -50,7 +81,7 @@ Requirement: Output ONLY the JSON array. If a question is code-based, put the co
         difficulty
       });
     } catch (err) {
-      alert('Invalid JSON format. Please ensure it follows the ChatGPT guide.');
+      alert(`Invalid JSON format: ${err.message}. Please ensure it follows the ChatGPT guide.`);
     }
   };
 
