@@ -39,12 +39,13 @@
     
     @media (min-width: 768px) {
       padding: $spacing-lg;
-      padding-bottom: $spacing-xl;
+      padding-bottom: calc(80px + env(safe-area-inset-bottom, 12px));
     }
     
     @include lg {
       padding-left: $spacing-xl;
       padding-right: $spacing-xl;
+      padding-bottom: $spacing-xl;
     }
     overflow-y: auto;
     overflow-x: hidden;
