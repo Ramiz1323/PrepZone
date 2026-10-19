@@ -236,7 +236,7 @@ const UploadMaterialModal = ({ isOpen, onClose }) => {
             <div className="form-group">
               <label>Document Title *</label>
               <Input
-                placeholder="e.g., Operating System - Process Synchronization"
+                placeholder="e.g., Day - 1 || System Design"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 disabled={uploading}
@@ -311,7 +311,7 @@ const UploadMaterialModal = ({ isOpen, onClose }) => {
           {uploading && (
             <div className="upload-progress-wrapper">
               <div className="progress-info">
-                <span>Uploading to ImageKit...</span>
+                <span>Uploading PDF...</span>
                 <span>{uploadProgress}%</span>
               </div>
               <div className="progress-bar-bg">

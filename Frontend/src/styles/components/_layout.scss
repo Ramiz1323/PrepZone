@@ -23,7 +23,7 @@
   transition: padding-left 0.4s ease;
 
   @include lg {
-    padding-left: 250px + ($spacing-md * 2); // Sidebar width + margin
+    padding-left: 256px + 28px; // Sidebar width 256px + margin
   }
 
   .page-container {
